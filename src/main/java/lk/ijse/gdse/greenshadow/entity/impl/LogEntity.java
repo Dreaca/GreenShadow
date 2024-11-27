@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
-@Entity
+//@Entity
 public class LogEntity implements SuperEntity {
     @Id
     private String logcode;

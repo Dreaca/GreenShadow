@@ -12,7 +12,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Entity
+//@Entity
 public class VehicleEntity implements SuperEntity{
     @Id
     private String vehicleCode;

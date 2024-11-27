@@ -1,8 +1,8 @@
-package lk.ijse.gdse.greenshadow.dto;
+package lk.ijse.gdse.greenshadow.dto.impl;
 
+import lk.ijse.gdse.greenshadow.dto.SuperDTO;
 import lk.ijse.gdse.greenshadow.entity.Gender;
 import lk.ijse.gdse.greenshadow.entity.Role;
-import lk.ijse.gdse.greenshadow.entity.impl.FieldEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class StaffDTO {
+public class StaffDTO implements SuperDTO {
     private String staffId;
     private String firstName;
     private String lastName;

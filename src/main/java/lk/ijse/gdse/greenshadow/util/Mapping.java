@@ -1,6 +1,6 @@
 package lk.ijse.gdse.greenshadow.util;
 
-import lk.ijse.gdse.greenshadow.dto.*;
+import lk.ijse.gdse.greenshadow.dto.impl.*;
 import lk.ijse.gdse.greenshadow.entity.impl.*;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -60,4 +60,7 @@ public class Mapping {
         return modelMapper.map(fieldEntityList, new TypeToken<List<FieldDTO>>() {}.getType());
     }
 
+    public UserEntity toUserEntity(UserDTO userDTO) {
+        return modelMapper.map(userDTO, UserEntity.class);
+    }
 }

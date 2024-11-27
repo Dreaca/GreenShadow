@@ -5,6 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lk.ijse.gdse.greenshadow.service.JwtService;
+import lk.ijse.gdse.greenshadow.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Configuration;
@@ -20,8 +21,6 @@ import java.io.IOException;
 @Configuration
 @RequiredArgsConstructor
 public class JwtConfigFilter extends OncePerRequestFilter {
-
-
     public final JwtService jwtService;
     public final UserService userService;
     @Override

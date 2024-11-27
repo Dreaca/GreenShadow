@@ -1,9 +1,6 @@
 package lk.ijse.gdse.greenshadow.entity.impl;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lk.ijse.gdse.greenshadow.entity.SuperEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.awt.*;
 import java.util.List;
 
-@Entity
+//@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -24,7 +21,7 @@ public class FieldEntity implements SuperEntity {
     private Double extSizeofField;
     @OneToMany(mappedBy = "field")
     private List<CropEntity> crops;
-    @OneToMany(mappedBy = "field")
+    @ManyToMany(mappedBy = "field")
     private List<StaffEntity> staff;
     @Column(columnDefinition = "LONGTEXT")
     private String fieldPicture1;

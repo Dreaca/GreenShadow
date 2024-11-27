@@ -1,9 +1,6 @@
-package lk.ijse.gdse.greenshadow.dto;
+package lk.ijse.gdse.greenshadow.dto.impl;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.OneToMany;
-import lk.ijse.gdse.greenshadow.entity.impl.CropEntity;
-import lk.ijse.gdse.greenshadow.entity.impl.StaffEntity;
+import lk.ijse.gdse.greenshadow.dto.SuperDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +11,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FieldDTO {
+public class FieldDTO implements SuperDTO {
     private String fieldCode;
     private String fieldName;
     private Point location;

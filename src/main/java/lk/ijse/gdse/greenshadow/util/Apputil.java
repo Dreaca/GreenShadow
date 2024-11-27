@@ -25,4 +25,7 @@ public class Apputil {
     public static String convertToBase64(byte[] profilePicture){
         return Base64.getEncoder().encodeToString(profilePicture);
     }
+    public static String generateUSerId(){
+        return "UID"+UUID.randomUUID().toString();
+    }
 }
