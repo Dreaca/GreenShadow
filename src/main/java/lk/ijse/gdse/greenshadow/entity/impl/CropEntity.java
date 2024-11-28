@@ -1,17 +1,17 @@
 package lk.ijse.gdse.greenshadow.entity.impl;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lk.ijse.gdse.greenshadow.entity.SuperEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-//@Entity
+@Entity
 public class CropEntity implements SuperEntity {
     @Id
     private String cropCode;
@@ -20,6 +20,6 @@ public class CropEntity implements SuperEntity {
     private String cropImage;
     private String category;
     private String season;
-    @ManyToOne
-    private FieldEntity field;
+    @OneToMany(mappedBy = "crop", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FieldEntity> fields;
 }

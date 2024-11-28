@@ -1,12 +1,9 @@
 package lk.ijse.gdse.greenshadow.controller;
 
-import jakarta.persistence.PostRemove;
-import lk.ijse.gdse.greenshadow.dto.impl.SignupRequest;
 import lk.ijse.gdse.greenshadow.dto.impl.StaffDTO;
 import lk.ijse.gdse.greenshadow.dto.impl.UserDTO;
 import lk.ijse.gdse.greenshadow.entity.Gender;
 import lk.ijse.gdse.greenshadow.entity.Role;
-import lk.ijse.gdse.greenshadow.entity.impl.StaffEntity;
 import lk.ijse.gdse.greenshadow.secure.JWTAuthResponse;
 import lk.ijse.gdse.greenshadow.secure.SignIn;
 import lk.ijse.gdse.greenshadow.service.AuthService;

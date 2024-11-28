@@ -5,11 +5,12 @@ import lk.ijse.gdse.greenshadow.entity.SuperEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.java.Log;
 
 import java.awt.*;
 import java.util.List;
 
-//@Entity
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -19,12 +20,17 @@ public class FieldEntity implements SuperEntity {
     private String fieldName;
     private Point location;
     private Double extSizeofField;
-    @OneToMany(mappedBy = "field")
-    private List<CropEntity> crops;
-    @ManyToMany(mappedBy = "field")
+    @ManyToOne
+    @JoinColumn(name = "cropCode", nullable = false)
+    private CropEntity crop;
+    @ManyToMany
     private List<StaffEntity> staff;
     @Column(columnDefinition = "LONGTEXT")
     private String fieldPicture1;
     @Column(columnDefinition = "LONGTEXT")
     private String fieldPicture2;
+    @ManyToMany
+    private List<EquipmentEntity>equipment;
+    @OneToMany
+    private List<LogEntity> logs;
 }
