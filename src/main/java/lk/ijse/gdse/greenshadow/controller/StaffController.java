@@ -1,13 +1,12 @@
 package lk.ijse.gdse.greenshadow.controller;
 
-import lk.ijse.gdse.greenshadow.customStatusCodes.StaffErrorCode;
+import lk.ijse.gdse.greenshadow.customStatusCodes.GeneralErrorCode;
 import lk.ijse.gdse.greenshadow.dto.StaffStatus;
 import lk.ijse.gdse.greenshadow.dto.impl.StaffDTO;
 import lk.ijse.gdse.greenshadow.entity.Gender;
 import lk.ijse.gdse.greenshadow.entity.Role;
 import lk.ijse.gdse.greenshadow.exceptions.DataPersistException;
 import lk.ijse.gdse.greenshadow.service.StaffService;
-import lk.ijse.gdse.greenshadow.service.UserService;
 import lk.ijse.gdse.greenshadow.util.Apputil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,7 +78,7 @@ public class StaffController {
         Pattern regexPattern = Pattern.compile(regexForStaffID);
         Matcher matcher = regexPattern.matcher(staffId);
         if (!matcher.matches()) {
-            return new StaffErrorCode(1,"Selected member does not exist");
+            return new GeneralErrorCode(1,"Selected member does not exist");
         }
           return staffService.getMember(staffId);
     }
