@@ -22,4 +22,6 @@ public class CropEntity implements SuperEntity {
     private String season;
     @OneToMany(mappedBy = "crop", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FieldEntity> fields;
+    @OneToMany(mappedBy = "crop")
+    private List<LogEntity> logs;
 }

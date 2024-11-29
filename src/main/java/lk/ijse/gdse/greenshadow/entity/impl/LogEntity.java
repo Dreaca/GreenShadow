@@ -23,8 +23,8 @@ public class LogEntity implements SuperEntity {
     private String logImage;
     @ManyToOne
     private FieldEntity field;
-    @ManyToMany
-    private List<CropEntity> crops;
+    @ManyToOne
+    private CropEntity crop;
     @ManyToMany
     private List<StaffEntity> staff;
 }

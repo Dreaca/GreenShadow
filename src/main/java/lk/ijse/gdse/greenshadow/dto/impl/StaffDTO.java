@@ -1,5 +1,6 @@
 package lk.ijse.gdse.greenshadow.dto.impl;
 
+import lk.ijse.gdse.greenshadow.dto.StaffStatus;
 import lk.ijse.gdse.greenshadow.dto.SuperDTO;
 import lk.ijse.gdse.greenshadow.entity.Gender;
 import lk.ijse.gdse.greenshadow.entity.Role;
@@ -12,7 +13,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class StaffDTO implements SuperDTO {
+public class StaffDTO implements StaffStatus {
     private String staffId;
     private String firstName;
     private String lastName;
