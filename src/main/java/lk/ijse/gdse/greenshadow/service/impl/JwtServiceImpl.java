@@ -5,7 +5,10 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lk.ijse.gdse.greenshadow.entity.impl.UserEntity;
 import lk.ijse.gdse.greenshadow.service.JwtService;
+import lk.ijse.gdse.greenshadow.util.Mapping;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cglib.core.internal.Function;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,10 +25,13 @@ import java.util.Map;
 public class JwtServiceImpl implements JwtService {
     @Value("${spring.jwtKey}")
     private String secretKey;
-
+    public static final long JWT_TOKEN_VALIDITY = 24 * 60 * 60 * 12;
+    @Autowired
+    private Mapping mapping;
     @Override
     public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
+        String email = extractClaim(token, Claims::getSubject);
+        return email ;
     }
 
     @Override
@@ -38,14 +44,12 @@ public class JwtServiceImpl implements JwtService {
                 .map(GrantedAuthority::getAuthority)
                 .findFirst()
                 .orElse("Other"));
-
-        Date now = new Date();
-        Date expiration = new Date(now.getTime() + 1000 * 600);
+        UserEntity userEntity = (UserEntity) user;
         return Jwts.builder()
                 .setClaims(genClaims)
-                .setSubject(user.getUsername())
-                .setIssuedAt(now)
-                .setExpiration(expiration)
+                .setSubject(mapping.toUserDTO(userEntity).getEmail())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
                 .signWith(SignatureAlgorithm.HS256,getSecretKey()).compact();
     }
     @Override
@@ -62,8 +66,8 @@ public class JwtServiceImpl implements JwtService {
         final Claims claims = getClaims(token);
         return claimResolver.apply(claims);
     }
-
-    private Claims getClaims(String token) {
+    @Override
+    public Claims getClaims(String token) {
         return Jwts.parser().setSigningKey(getSecretKey()).build().parseClaimsJws(token).getBody();
     }
 

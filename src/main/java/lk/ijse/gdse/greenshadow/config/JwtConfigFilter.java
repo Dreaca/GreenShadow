@@ -1,5 +1,6 @@
 package lk.ijse.gdse.greenshadow.config;
 
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,23 +36,27 @@ public class JwtConfigFilter extends OncePerRequestFilter {
         }
 
         extractedToken=initToken.substring(7);
+        Claims claims = jwtService.getClaims(extractedToken);
+        System.out.println("Claims: " + claims); // Log the claims to verify
         email = jwtService.extractUsername(extractedToken);
-        if(StringUtils.isNotEmpty(email) && SecurityContextHolder.getContext().getAuthentication() == null) {
+        request.setAttribute("email", email);
+        request.setAttribute("username", email);
+        request.setAttribute("role",claims.get("role"));
+        if (StringUtils.isNotEmpty(email) && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userService.getUserDetailsService().loadUserByUsername(email);
 
-            if (jwtService.validateToken(extractedToken,userDetails)){
+            if (jwtService.validateToken(extractedToken, userDetails)) {
                 SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
                         = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
+                // Set the security context in the SecurityContextHolder
                 securityContext.setAuthentication(usernamePasswordAuthenticationToken);
+                SecurityContextHolder.setContext(securityContext); // <--- This line is important
             }
         }
         doFilter(request, response, filterChain);
     }
-
-
-
 }

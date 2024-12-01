@@ -21,7 +21,6 @@ import java.sql.Date;
 @RequiredArgsConstructor
 @CrossOrigin
 public class AuthUserController {
-    private UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final AuthService authService;
 
@@ -43,7 +42,6 @@ public class AuthUserController {
             @RequestParam("email") String email, // StaffDTO email
             @RequestParam("password") String password // UserDTO password
     ) {
-        System.out.println(role);
         StaffDTO member = new StaffDTO();
         UserDTO user = new UserDTO();
         //        Staff Member data
@@ -77,6 +75,7 @@ public class AuthUserController {
     }
     @PostMapping("/refreshToken")
     public ResponseEntity<JWTAuthResponse> refreshToken(@RequestBody String refreshToken){
+        System.out.println(refreshToken);
         return ResponseEntity.ok(authService.refreshToken(refreshToken));
     }
 }

@@ -11,6 +11,7 @@ import lk.ijse.gdse.greenshadow.util.Apputil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,28 +27,45 @@ import java.util.regex.Pattern;
 public class StaffController {
     @Autowired
     private StaffService staffService;
-    @PostMapping("/save")
-    public ResponseEntity<Void> saveUser(@RequestBody StaffDTO staffDTO){
+    @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> saveUser(
+            @RequestParam("firstName") String firstName,
+            @RequestParam("lastName") String lastName,
+            @RequestParam("designation") String designation,
+            @RequestParam("gender") String gender,
+            @RequestParam("joinedDate") String joinedDate,
+            @RequestParam("dob") String dob,
+            @RequestParam("role") String role,
+            @RequestParam("address1") String address1,
+            @RequestParam("address2") String address2,
+            @RequestParam("address3") String address3,
+            @RequestParam("address4") String address4,
+            @RequestParam("address5") String address5,
+            @RequestParam("contactNo") String contactNo,
+            @RequestParam("email") String email
+    ){
         StaffDTO member = new StaffDTO();
         member.setStaffId(Apputil.generateStaffID());
-        member.setFirstName(staffDTO.getFirstName());
-        member.setLastName(staffDTO.getLastName());
-        member.setDesignation(staffDTO.getDesignation());
-        member.setGender(Gender.valueOf(staffDTO.getGender().toString().toUpperCase()));
-        member.setJoinedDate(staffDTO.getJoinedDate());
-        member.setDOB(staffDTO.getDOB());
-        member.setRole(Role.valueOf(staffDTO.getRole().toString().toUpperCase()));
-        member.setAddressLine1(staffDTO.getAddressLine1());
-        member.setAddressLine2(staffDTO.getAddressLine2());
-        member.setAddressLine3(staffDTO.getAddressLine3());
-        member.setAddressLine4(staffDTO.getAddressLine4());
-        member.setAddressLine5(staffDTO.getAddressLine5());
-        member.setContactNo(staffDTO.getContactNo());
-        member.setEmail(staffDTO.getEmail());
+        member.setFirstName(firstName);
+        member.setLastName(lastName);
+        member.setDesignation(designation);
+        member.setGender(Gender.valueOf(gender.toUpperCase()));
+        member.setJoinedDate(Date.valueOf(joinedDate));
+        member.setDOB(Date.valueOf(dob));
+        member.setRole(Role.valueOf(role.toUpperCase()));
+        member.setAddressLine1(address1);
+        member.setAddressLine2(address2);
+        member.setAddressLine3(address3);
+        member.setAddressLine4(address4);
+        member.setAddressLine5(address5);
+        member.setContactNo(contactNo);
+        member.setEmail(email);
+        System.out.println(member);
         try {
             staffService.saveMember(member);
             return new ResponseEntity<>(HttpStatus.CREATED);
         }catch (DataPersistException e){
+            System.out.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

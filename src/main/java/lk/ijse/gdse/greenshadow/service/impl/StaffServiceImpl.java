@@ -23,7 +23,7 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public void saveMember(StaffDTO member) {
         StaffEntity save = staffDao.save(mapping.toStaffEntity(member));
-        if (save != null) {
+        if (save == null) {
             throw new DataPersistException("Could not save member");
         }
     }
