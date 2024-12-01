@@ -71,11 +71,11 @@ public class StaffController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping
+    @GetMapping(value = "/getAll", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<StaffDTO> getStaff() {
         return staffService.getAllMembers();
     }
-    @GetMapping(value = "/{staffId}")
+    @GetMapping(value = "/{staffId}",produces = MediaType.APPLICATION_JSON_VALUE)
     public StaffStatus getStaffById(@PathVariable("staffId") String staffId) {
         String regexForStaffID = "^SID[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$";
         Pattern regexPattern = Pattern.compile(regexForStaffID);
@@ -100,8 +100,9 @@ public class StaffController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @DeleteMapping
-    public ResponseEntity<Void> deleteStaff(@RequestParam("staffId") String staffId) {
+    @DeleteMapping(value = "/{staffId}")
+    public ResponseEntity<Void> deleteStaff(@PathVariable("staffId") String staffId) {
+
         String regexForStaffID = "^SID[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$";
         Pattern regexPattern = Pattern.compile(regexForStaffID);
         Matcher matcher = regexPattern.matcher(staffId);

@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 @EnableJpaRepositories
 public interface StaffDao extends JpaRepository<StaffEntity,String> {
+    StaffEntity findByFirstName(String name);
 }

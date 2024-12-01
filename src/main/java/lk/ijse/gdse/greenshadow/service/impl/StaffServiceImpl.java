@@ -1,6 +1,7 @@
 package lk.ijse.gdse.greenshadow.service.impl;
 
 import lk.ijse.gdse.greenshadow.dao.StaffDao;
+import lk.ijse.gdse.greenshadow.dto.StaffStatus;
 import lk.ijse.gdse.greenshadow.dto.impl.StaffDTO;
 import lk.ijse.gdse.greenshadow.entity.impl.StaffEntity;
 import lk.ijse.gdse.greenshadow.exceptions.DataPersistException;
@@ -75,5 +76,10 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public List<StaffDTO> getAllMembers() {
         return mapping.toStaffDTOList(staffDao.findAll());
+    }
+
+    @Override
+    public StaffStatus getMemberByName(String name) {
+        return mapping.toStaffDTO(staffDao.findByFirstName(name));
     }
 }
