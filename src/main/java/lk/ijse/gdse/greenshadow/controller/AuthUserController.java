@@ -43,6 +43,7 @@ public class AuthUserController {
             @RequestParam("email") String email, // StaffDTO email
             @RequestParam("password") String password // UserDTO password
     ) {
+        System.out.println(role);
         StaffDTO member = new StaffDTO();
         UserDTO user = new UserDTO();
         //        Staff Member data
@@ -53,7 +54,6 @@ public class AuthUserController {
         member.setGender(Gender.valueOf(gender.toUpperCase()));
         member.setJoinedDate(Date.valueOf(joinedDate));
         member.setDOB(Date.valueOf(dob));
-        member.setRole(Role.valueOf(role.toUpperCase()));
         member.setAddressLine1(address1);
         member.setAddressLine2(address2);
         member.setAddressLine3(address3);
@@ -61,14 +61,17 @@ public class AuthUserController {
         member.setAddressLine5(address5);
         member.setContactNo(contactNo);
         member.setEmail(email);
+        member.setRole(Role.valueOf(role.toUpperCase()));
+
         //        User Data
         user.setUserId(Apputil.generateUSerId());
         user.setEmail(email);
+        user.setRole(Role.valueOf(role.toUpperCase()));
         user.setPassword(passwordEncoder.encode(password));
 
         return ResponseEntity.ok(authService.signUp(member, user));
     }
-    @PutMapping("/signIn")
+    @PostMapping("/signIn")
     public ResponseEntity<JWTAuthResponse> authenticateUser(@RequestBody SignIn signIn){
         return ResponseEntity.ok(authService.signIn(signIn));
     }

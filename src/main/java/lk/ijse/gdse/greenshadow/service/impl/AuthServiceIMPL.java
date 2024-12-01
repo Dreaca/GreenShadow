@@ -43,7 +43,6 @@ public class AuthServiceIMPL implements AuthService {
             return JWTAuthResponse.builder().token(generateToken).build();
         }else return JWTAuthResponse.builder().build();
 
-
     }
 
     @Override

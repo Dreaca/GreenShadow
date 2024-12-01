@@ -8,6 +8,7 @@ import io.jsonwebtoken.security.Keys;
 import lk.ijse.gdse.greenshadow.service.JwtService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cglib.core.internal.Function;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +34,11 @@ public class JwtServiceImpl implements JwtService {
     }
 
     private String genToken(Map<String, Object> genClaims, UserDetails user) {
-        genClaims.put("role",user.getAuthorities());
+        genClaims.put("role", user.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .findFirst()
+                .orElse("Other"));
+
         Date now = new Date();
         Date expiration = new Date(now.getTime() + 1000 * 600);
         return Jwts.builder()
