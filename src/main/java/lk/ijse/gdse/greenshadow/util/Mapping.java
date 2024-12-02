@@ -56,9 +56,6 @@ public class Mapping {
     public List<CropDTO> toCropDTOList(List<CropEntity> cropEntityList) {
         return modelMapper.map(cropEntityList, new TypeToken<List<CropDTO>>() {}.getType());
     }
-    public List<FieldDTO> toFieldDTOList(List<FieldEntity> fieldEntityList) {
-        return modelMapper.map(fieldEntityList, new TypeToken<List<FieldDTO>>() {}.getType());
-    }
 
     public UserEntity toUserEntity(UserDTO userDTO) {
         return modelMapper.map(userDTO, UserEntity.class);

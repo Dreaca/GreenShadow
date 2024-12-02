@@ -36,6 +36,7 @@ public class SecurityConfig {
                                 "api/v1/auth/refreshToken")
                         .permitAll()
                         .requestMatchers("api/v1/staff/**").permitAll()
+                        .requestMatchers("api/v1/field/**").permitAll()
                         .anyRequest()
                         .authenticated()
                 )

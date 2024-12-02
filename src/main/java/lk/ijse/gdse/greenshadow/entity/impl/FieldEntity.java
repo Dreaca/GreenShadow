@@ -19,9 +19,9 @@ public class FieldEntity implements SuperEntity {
     private String fieldCode;
     private String fieldName;
     private Point location;
-    private Double extSizeofField;
+    private Double size;
     @ManyToOne
-    @JoinColumn(name = "cropCode", nullable = false)
+    @JoinColumn(name = "cropCode")
     private CropEntity crop;
     @ManyToMany
     private List<StaffEntity> staff;

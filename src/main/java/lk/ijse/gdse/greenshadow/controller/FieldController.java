@@ -11,9 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.*;
-import java.util.Base64;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,13 +27,17 @@ public class FieldController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> saveField(
             @RequestParam("fieldName") String fieldName,
-            @RequestParam("location") Point location,
-            @RequestParam("extSizeofField") Double extSizeofField,
-            @RequestParam("fieldPicture1") String fieldPicture1,
-            @RequestParam("fieldPicture2") String fieldPicture2
+            @RequestParam("location") String location,
+            @RequestParam("size") Double extSizeofField,
+            @RequestParam("plantedCrop") String plantedCrop,
+            @RequestParam("staffList") List<String> staffList,
+            @RequestParam("image1") MultipartFile fieldPicture1,
+            @RequestParam("image2") MultipartFile fieldPicture2
     ) {
         String pic1 = null;
         String pic2 = null;
+        int x = Integer.parseInt(location.split(",")[0]);
+        int y = Integer.parseInt(location.split(",")[1]);
 
         try {
             byte[] pic1Bytes = fieldPicture1.getBytes();
@@ -46,8 +50,10 @@ public class FieldController {
 
             buildField.setFieldCode(Apputil.generateFieldCode());
             buildField.setFieldName(fieldName);
-            buildField.setLocation(location);
-            buildField.setExtSizeofField(extSizeofField);
+            buildField.setLocation(new Point(x,y));
+            buildField.setSize(extSizeofField);
+            buildField.setStaff(staffList);
+//            buildField.setCrop(plantedCrop);
             buildField.setFieldPicture1(pic1);
             buildField.setFieldPicture2(pic2);
 
@@ -82,12 +88,12 @@ public class FieldController {
         }
     }
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<FieldDTO> getAllFields() {
         return fieldService.getAllFields();
     }
 
-    @GetMapping(value = "/{fieldCode}")
+    @GetMapping(value = "/{fieldCode}",produces = MediaType.APPLICATION_JSON_VALUE)
     public FieldStatus getField(@PathVariable("fieldCode") String fieldCode) {
         String regex = "^FID[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$";
         Pattern compile = Pattern.compile(regex);
