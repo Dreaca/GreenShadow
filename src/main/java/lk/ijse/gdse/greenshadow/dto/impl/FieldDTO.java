@@ -17,7 +17,8 @@ public class FieldDTO implements FieldStatus {
     private Point location;
     private Double size;
     private CropDTO crop;
-    private List<String> staff;
+    private List<StaffDTO> staff;
     private String fieldPicture1;
     private String fieldPicture2;
+    private List<EquipmentDTO> equipment;
 }

@@ -37,6 +37,7 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers("api/v1/staff/**").permitAll()
                         .requestMatchers("api/v1/field/**").permitAll()
+                        .requestMatchers("api/v1/crop/**").permitAll()
                         .anyRequest()
                         .authenticated()
                 )

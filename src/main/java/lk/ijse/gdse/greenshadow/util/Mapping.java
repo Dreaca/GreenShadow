@@ -53,8 +53,14 @@ public class Mapping {
     public List<StaffDTO> toStaffDTOList(List<StaffEntity> staffEntityList) {
         return modelMapper.map(staffEntityList, new TypeToken<List<StaffDTO>>() {}.getType());
     }
+    public List<StaffEntity> toStaffEntityList(List<StaffDTO> staffDTOList) {
+        return modelMapper.map(staffDTOList, new TypeToken<List<StaffEntity>>() {}.getType());
+    }
     public List<CropDTO> toCropDTOList(List<CropEntity> cropEntityList) {
         return modelMapper.map(cropEntityList, new TypeToken<List<CropDTO>>() {}.getType());
+    }
+    public List<CropEntity> toCropEntityList(List<CropDTO> cropDTOList) {
+        return modelMapper.map(cropDTOList, new TypeToken<List<CropEntity>>() {}.getType());
     }
 
     public UserEntity toUserEntity(UserDTO userDTO) {
@@ -62,5 +68,23 @@ public class Mapping {
     }
     public UserDTO toUserDTO(UserEntity userEntity) {
         return modelMapper.map(userEntity, UserDTO.class);
+    }
+    public List<EquipmentEntity> toEquipmentEntityList(List<EquipmentDTO> equipmentDTOList) {
+        return modelMapper.map(equipmentDTOList, new TypeToken<List<EquipmentEntity>>() {}.getType());
+    }
+    public List<EquipmentDTO> toEquipmentDTOList(List<EquipmentEntity> equipmentEntityList) {
+        return modelMapper.map(equipmentEntityList, new TypeToken<List<EquipmentDTO>>() {}.getType());
+    }
+    public List<FieldEntity> toFieldEntityList(List<FieldDTO> fieldDTOList) {
+        return modelMapper.map(fieldDTOList, new TypeToken<List<FieldEntity>>() {}.getType());
+    }
+    public List<FieldDTO> toFieldDTOList(List<FieldEntity> fieldEntityList) {
+        return modelMapper.map(fieldEntityList, new TypeToken<List<FieldDTO>>() {}.getType());
+    }
+    public List<LogEntity> toLogEntityList(List<LogDTO> logDTOList) {
+        return modelMapper.map(logDTOList, new TypeToken<List<LogEntity>>() {}.getType());
+    }
+    public List<LogDTO> toLogDTOList(List<LogEntity> logEntityList) {
+        return modelMapper.map(logEntityList, new TypeToken<List<LogDTO>>() {}.getType());
     }
 }

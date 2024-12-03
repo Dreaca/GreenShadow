@@ -2,7 +2,9 @@ package lk.ijse.gdse.greenshadow.controller;
 
 import lk.ijse.gdse.greenshadow.customStatusCodes.GeneralErrorCode;
 import lk.ijse.gdse.greenshadow.dto.FieldStatus;
+import lk.ijse.gdse.greenshadow.dto.impl.CropDTO;
 import lk.ijse.gdse.greenshadow.dto.impl.FieldDTO;
+import lk.ijse.gdse.greenshadow.dto.impl.StaffDTO;
 import lk.ijse.gdse.greenshadow.exceptions.DataPersistException;
 import lk.ijse.gdse.greenshadow.service.FieldService;
 import lk.ijse.gdse.greenshadow.util.Apputil;
@@ -29,8 +31,8 @@ public class FieldController {
             @RequestParam("fieldName") String fieldName,
             @RequestParam("location") String location,
             @RequestParam("size") Double extSizeofField,
-            @RequestParam("plantedCrop") String plantedCrop,
-            @RequestParam("staffList") List<String> staffList,
+            @RequestParam("plantedCrop") CropDTO plantedCrop,
+            @RequestParam("staffList") List<StaffDTO> staffList,
             @RequestParam("image1") MultipartFile fieldPicture1,
             @RequestParam("image2") MultipartFile fieldPicture2
     ) {
@@ -53,7 +55,7 @@ public class FieldController {
             buildField.setLocation(new Point(x,y));
             buildField.setSize(extSizeofField);
             buildField.setStaff(staffList);
-//            buildField.setCrop(plantedCrop);
+            buildField.setCrop(plantedCrop);
             buildField.setFieldPicture1(pic1);
             buildField.setFieldPicture2(pic2);
 
@@ -103,8 +105,46 @@ public class FieldController {
         }
         return fieldService.getField(fieldCode);
     }
-    @PutMapping(value = "/{fieldCode}")
-    public ResponseEntity<Void> updateField(@PathVariable("fieldCode") String fieldCode, @RequestBody FieldDTO fieldDTO) {
-        return null;
+    @PutMapping(value = "/{fieldCode}" ,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> updateField(@PathVariable("fieldCode") String fieldCode,
+                                            @RequestParam("fieldName") String fieldName,
+                                            @RequestParam("location") String location,
+                                            @RequestParam("size") Double extSizeofField,
+                                            @RequestParam("plantedCrop") CropDTO plantedCrop,
+                                            @RequestParam("staffList") List<StaffDTO> staffList,
+                                            @RequestParam("image1") MultipartFile fieldPicture1,
+                                            @RequestParam("image2") MultipartFile fieldPicture2) {
+        String pic1 = null;
+        String pic2 = null;
+        int x = Integer.parseInt(location.split(",")[0]);
+        int y = Integer.parseInt(location.split(",")[1]);
+
+        try {
+            byte[] pic1Bytes = fieldPicture1.getBytes();
+            byte[] pic2Bytes = fieldPicture2.getBytes();
+
+            pic1 = Apputil.convertToBase64(pic1Bytes);
+            pic2 = Apputil.convertToBase64(pic2Bytes);
+
+            var buildField = new FieldDTO();
+
+            buildField.setFieldCode(Apputil.generateFieldCode());
+            buildField.setFieldName(fieldName);
+            buildField.setLocation(new Point(x,y));
+            buildField.setSize(extSizeofField);
+            buildField.setStaff(staffList);
+            buildField.setCrop(plantedCrop);
+            buildField.setFieldPicture1(pic1);
+            buildField.setFieldPicture2(pic2);
+
+            fieldService.updateField(buildField,fieldCode);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (DataPersistException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
