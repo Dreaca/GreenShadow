@@ -1,6 +1,7 @@
 package lk.ijse.gdse.greenshadow.service.impl;
 
 import jakarta.transaction.Transactional;
+import lk.ijse.gdse.greenshadow.customStatusCodes.GeneralErrorCode;
 import lk.ijse.gdse.greenshadow.dao.UserDao;
 import lk.ijse.gdse.greenshadow.dto.UserStatus;
 import lk.ijse.gdse.greenshadow.dto.impl.UserDTO;
@@ -15,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -40,21 +42,30 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> getAllUsers() {
-        return List.of();
+        return mapper.toUserDTOList(userDao.findAll());
     }
 
     @Override
     public UserStatus getUser(String userId) {
-        return null;
+        if(userDao.findById(userId).isPresent()) {
+            return mapper.toUserDTO(userDao.getReferenceById(userId));
+        }else return new GeneralErrorCode(1,"User Can not be found");
     }
 
     @Override
     public void deleteUser(String userId) {
-
+        if(userDao.findById(userId).isPresent()) {
+            userDao.deleteById(userId);
+        }else throw new UserNotFoundException("User with id"+userId+" is not available");
     }
 
     @Override
     public void updateUser(String userId, UserDTO user) {
-
+        Optional<UserEntity> byId = userDao.findById(userId);
+        if(byId.isPresent()) {
+            UserEntity userEntity = byId.get();
+            userEntity.setEmail(user.getEmail());
+            userEntity.setPassword(user.getPassword());
+        }else throw new UserNotFoundException("User with id"+userId+" is not available");
     }
 }

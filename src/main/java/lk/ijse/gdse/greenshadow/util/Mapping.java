@@ -87,4 +87,16 @@ public class Mapping {
     public List<LogDTO> toLogDTOList(List<LogEntity> logEntityList) {
         return modelMapper.map(logEntityList, new TypeToken<List<LogDTO>>() {}.getType());
     }
+    public List<UserDTO> toUserDTOList(List<UserEntity>userEntityList ) {
+        return modelMapper.map(userEntityList, new TypeToken<List<UserDTO>>() {}.getType());
+    }
+    public List<UserEntity> toUserEntityList(List<UserEntity>userEntityList) {
+        return modelMapper.map(userEntityList, new TypeToken<List<UserEntity>>() {}.getType());
+    }
+    public List<VehicleDTO> toVehicleDTOList(List<VehicleEntity> vehicleEntities){
+        return modelMapper.map(vehicleEntities,new TypeToken<List<VehicleDTO>>(){}.getType());
+    }
+    public List<VehicleEntity> toVehicleEntityList(List<VehicleDTO> vehicleDTOList){
+        return modelMapper.map(vehicleDTOList,new TypeToken<List<VehicleEntity>>(){}.getType());
+    }
 }

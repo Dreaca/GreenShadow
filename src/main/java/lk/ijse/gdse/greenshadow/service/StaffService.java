@@ -9,7 +9,7 @@ public interface StaffService {
     void saveMember(StaffDTO member);
     void deleteMember(String memberId);
     void updateMember(StaffDTO member, String memberId);
-    StaffDTO getMember(String memberId);
+    StaffStatus getMember(String memberId);
     List<StaffDTO> getAllMembers();
 
     StaffStatus getMemberByName(String name);

@@ -23,7 +23,7 @@ public class EquipmentServiceImpl implements EquipmentService {
     @Override
     public void saveEquipment(EquipmentDTO equipment) {
         EquipmentEntity save = equipmentDao.save(mapping.toEquipmentEntity(equipment));
-        if (equipment == null) {
+        if (save == null) {
             throw new DataPersistException("Can't save equipment");
         }
     }

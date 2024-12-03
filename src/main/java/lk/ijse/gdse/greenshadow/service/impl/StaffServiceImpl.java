@@ -1,5 +1,6 @@
 package lk.ijse.gdse.greenshadow.service.impl;
 
+import lk.ijse.gdse.greenshadow.customStatusCodes.GeneralErrorCode;
 import lk.ijse.gdse.greenshadow.dao.StaffDao;
 import lk.ijse.gdse.greenshadow.dto.StaffStatus;
 import lk.ijse.gdse.greenshadow.dto.impl.StaffDTO;
@@ -64,12 +65,12 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public StaffDTO getMember(String memberId) {
+    public StaffStatus getMember(String memberId) {
         if(staffDao.existsById(memberId)){
             StaffEntity member = staffDao.getReferenceById(memberId);
             return mapping.toStaffDTO(member);
         }else {
-            throw new DataPersistException("Could not get member with id: " + memberId);
+            return new GeneralErrorCode(1,"User with id "+memberId+" does not exist");
         }
     }
 
