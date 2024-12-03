@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GeneralErrorCode implements StaffStatus, FieldStatus, UserStatus, VehicleStatus, EquipmentStatus {
+public class GeneralErrorCode implements StaffStatus, FieldStatus, UserStatus, VehicleStatus, EquipmentStatus,LogStatus {
     private int statusCode;
     private String statusMessage;
 }

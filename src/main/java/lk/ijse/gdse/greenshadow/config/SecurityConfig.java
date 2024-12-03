@@ -40,6 +40,7 @@ public class SecurityConfig {
                         .requestMatchers("api/v1/crop/**").permitAll()
                         .requestMatchers("api/v1/vehicle/**").permitAll()
                         .requestMatchers("api/v1/equipment/**").permitAll()
+                        .requestMatchers("api/v1/logs/**").permitAll()
                         .anyRequest()
                         .authenticated()
                 )

@@ -1,5 +1,6 @@
 package lk.ijse.gdse.greenshadow.service;
 
+import lk.ijse.gdse.greenshadow.dto.LogStatus;
 import lk.ijse.gdse.greenshadow.dto.impl.LogDTO;
 
 import java.util.List;
@@ -9,6 +10,6 @@ public interface LogService {
     void deleteLog(String logId);
     void updateLog(LogDTO logDTO, String logId);
     List<LogDTO> getAllLogs();
-    LogDTO getLog(String logId);
+    LogStatus getLog(String logId);
 
 }

@@ -1,5 +1,6 @@
 package lk.ijse.gdse.greenshadow.dto.impl;
 
+import lk.ijse.gdse.greenshadow.dto.LogStatus;
 import lk.ijse.gdse.greenshadow.dto.SuperDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +11,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LogDTO implements SuperDTO {
+public class LogDTO implements LogStatus {
     private String logcode;
     private Date logdate;
     private String observation;

@@ -1,6 +1,7 @@
 package lk.ijse.gdse.greenshadow.service.impl;
 
 import lk.ijse.gdse.greenshadow.dao.LogDao;
+import lk.ijse.gdse.greenshadow.dto.LogStatus;
 import lk.ijse.gdse.greenshadow.dto.impl.LogDTO;
 import lk.ijse.gdse.greenshadow.entity.impl.LogEntity;
 import lk.ijse.gdse.greenshadow.exceptions.DataPersistException;
@@ -54,7 +55,7 @@ public class LogServiceImpl implements LogService {
     }
 
     @Override
-    public LogDTO getLog(String logId) {
+    public LogStatus getLog(String logId) {
         if (logDao.findById(logId).isPresent()) {
             return mapping.toLogDTO(logDao.findById(logId).get());
         }else throw new DataPersistException("Log not found");
