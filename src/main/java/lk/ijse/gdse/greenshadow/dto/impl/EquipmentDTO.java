@@ -1,5 +1,6 @@
 package lk.ijse.gdse.greenshadow.dto.impl;
 
+import lk.ijse.gdse.greenshadow.dto.EquipmentStatus;
 import lk.ijse.gdse.greenshadow.dto.SuperDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +11,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EquipmentDTO implements SuperDTO {
+public class EquipmentDTO implements EquipmentStatus {
     private String equipmentCode;
     private String name;
     private String type;

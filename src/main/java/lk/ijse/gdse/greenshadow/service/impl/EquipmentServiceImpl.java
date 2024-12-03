@@ -1,6 +1,7 @@
 package lk.ijse.gdse.greenshadow.service.impl;
 
 import lk.ijse.gdse.greenshadow.dao.EquipmentDao;
+import lk.ijse.gdse.greenshadow.dto.EquipmentStatus;
 import lk.ijse.gdse.greenshadow.dto.impl.EquipmentDTO;
 import lk.ijse.gdse.greenshadow.entity.impl.EquipmentEntity;
 import lk.ijse.gdse.greenshadow.exceptions.DataPersistException;
@@ -34,7 +35,7 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     @Override
-    public EquipmentDTO getEquipmentById(String equipmentId) {
+    public EquipmentStatus getEquipmentById(String equipmentId) {
         Optional<EquipmentEntity> byId = equipmentDao.findById(equipmentId);
         if (byId.isPresent()) {
             return mapping.toEquipmentDTO(byId.get());
