@@ -1,6 +1,7 @@
 package lk.ijse.gdse.greenshadow.service.impl;
 
 import lk.ijse.gdse.greenshadow.dao.CropDao;
+import lk.ijse.gdse.greenshadow.dto.CropStatus;
 import lk.ijse.gdse.greenshadow.dto.impl.CropDTO;
 import lk.ijse.gdse.greenshadow.entity.impl.CropEntity;
 import lk.ijse.gdse.greenshadow.exceptions.DataPersistException;
@@ -30,7 +31,7 @@ public class CropServiceImpl implements CropService {
     }
 
     @Override
-    public CropDTO getCrop(String cropId) {
+    public CropStatus getCrop(String cropId) {
         if(cropDao.existsById(cropId)) {
             return mapping.toCropDTO(cropDao.getReferenceById(cropId));
         }else {

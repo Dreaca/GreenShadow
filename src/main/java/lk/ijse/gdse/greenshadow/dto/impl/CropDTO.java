@@ -1,5 +1,6 @@
 package lk.ijse.gdse.greenshadow.dto.impl;
 
+import lk.ijse.gdse.greenshadow.dto.CropStatus;
 import lk.ijse.gdse.greenshadow.dto.SuperDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +11,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CropDTO implements SuperDTO {
+public class CropDTO implements CropStatus {
     private String cropCode;
     private String cropCommonName;
     private String cropScientificName;
