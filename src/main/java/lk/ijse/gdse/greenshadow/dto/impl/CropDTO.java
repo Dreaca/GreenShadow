@@ -18,6 +18,6 @@ public class CropDTO implements CropStatus {
     private String cropImage;
     private String category;
     private String season;
-    private List<FieldDTO> fields;
-    private List<LogDTO> logs;
+    private List<String> fields;
+    private List<String> logs;
 }

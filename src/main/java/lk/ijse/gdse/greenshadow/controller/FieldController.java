@@ -30,9 +30,9 @@ public class FieldController {
     public ResponseEntity<Void> saveField(
             @RequestParam("fieldName") String fieldName,
             @RequestParam("location") String location,
-            @RequestParam("size") Double extSizeofField,
-            @RequestParam("plantedCrop") CropDTO plantedCrop,
-            @RequestParam("staffList") List<StaffDTO> staffList,
+            @RequestParam("size") String extSizeofField,
+            @RequestParam("plantedCrop") String plantedCrop,
+            @RequestParam("staffList") List<String> staffList,
             @RequestParam("image1") MultipartFile fieldPicture1,
             @RequestParam("image2") MultipartFile fieldPicture2
     ) {
@@ -53,7 +53,7 @@ public class FieldController {
             buildField.setFieldCode(Apputil.generateFieldCode());
             buildField.setFieldName(fieldName);
             buildField.setLocation(new Point(x,y));
-            buildField.setSize(extSizeofField);
+            buildField.setSize(Double.parseDouble(extSizeofField));
             buildField.setStaff(staffList);
             buildField.setCrop(plantedCrop);
             buildField.setFieldPicture1(pic1);
@@ -110,8 +110,8 @@ public class FieldController {
                                             @RequestParam("fieldName") String fieldName,
                                             @RequestParam("location") String location,
                                             @RequestParam("size") Double extSizeofField,
-                                            @RequestParam("plantedCrop") CropDTO plantedCrop,
-                                            @RequestParam("staffList") List<StaffDTO> staffList,
+                                            @RequestParam("plantedCrop") String plantedCrop,
+                                            @RequestParam("staffList") List<String> staffList,
                                             @RequestParam("image1") MultipartFile fieldPicture1,
                                             @RequestParam("image2") MultipartFile fieldPicture2) {
         String pic1 = null;

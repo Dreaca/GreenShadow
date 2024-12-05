@@ -35,10 +35,9 @@ public class AuthServiceIMPL implements AuthService {
     }
 
     @Override
-    public JWTAuthResponse signUp(StaffDTO staffDTO, UserDTO userDTO) {
+    public JWTAuthResponse signUp(UserDTO userDTO) {
         UserEntity save = userDao.save(mapping.toUserEntity(userDTO));
-        StaffEntity savedStaff = staffDao.save(mapping.toStaffEntity(staffDTO));
-        if(savedStaff != null) {
+        if(save != null) {
             String generateToken = jwtService.generateToken(save);
             return JWTAuthResponse.builder().token(generateToken).build();
         }else return JWTAuthResponse.builder().build();

@@ -56,17 +56,17 @@ public class CropServiceImpl implements CropService {
 
     @Override
     public void updateCrop(CropDTO cropDTO, String cropId) {
-        Optional<CropEntity> byId = cropDao.findById(cropId);
-        if (byId.isPresent()) {
-            byId.get().setCropCode(cropDTO.getCropCode());
-            byId.get().setCategory(cropDTO.getCategory());
-            byId.get().setCropCommonName(cropDTO.getCropCommonName());
-            byId.get().setCropScientificName(cropDTO.getCropScientificName());
-            byId.get().setSeason(cropDTO.getSeason());
-            byId.get().setCropImage(cropDTO.getCropImage());
-            byId.get().setFields(mapping.toFieldEntityList(cropDTO.getFields()));
-            byId.get().setLogs(mapping.toLogEntityList(cropDTO.getLogs()));
-        }
+//        Optional<CropEntity> byId = cropDao.findById(cropId);
+//        if (byId.isPresent()) {
+//            byId.get().setCropCode(cropDTO.getCropCode());
+//            byId.get().setCategory(cropDTO.getCategory());
+//            byId.get().setCropCommonName(cropDTO.getCropCommonName());
+//            byId.get().setCropScientificName(cropDTO.getCropScientificName());
+//            byId.get().setSeason(cropDTO.getSeason());
+//            byId.get().setCropImage(cropDTO.getCropImage());
+//            byId.get().setFields(mapping.toFieldEntityList(cropDTO.getFields()));
+//            byId.get().setLogs(mapping.toLogEntityList(cropDTO.getLogs()));
+//        }
     }
 
 

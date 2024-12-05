@@ -42,8 +42,8 @@ public class EquipmentController {
             @RequestParam("name") String equipmentName,
             @RequestParam("type") String type,
             @RequestParam("status") String status,
-            @RequestParam("staff") List<StaffDTO> staff,
-            @RequestParam("fields") List<FieldDTO> fields) {
+            @RequestParam("staffList") List<String> staff,
+            @RequestParam("fieldList") List<String> fields) {
         try{
             EquipmentDTO equipmentDTO = new EquipmentDTO();
 
@@ -51,8 +51,8 @@ public class EquipmentController {
             equipmentDTO.setName(equipmentName);
             equipmentDTO.setType(type);
             equipmentDTO.setStatus(status);
-            equipmentDTO.setStaff(staff);
-            equipmentDTO.setField(fields);
+            equipmentDTO.setStaffList(staff);
+            equipmentDTO.setFieldList(fields);
 
             equipmentService.saveEquipment(equipmentDTO);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -86,8 +86,8 @@ public class EquipmentController {
             @RequestParam("name") String equipmentName,
             @RequestParam("type") String type,
             @RequestParam("status") String status,
-            @RequestParam("staff") List<StaffDTO> staff,
-            @RequestParam("fields") List<FieldDTO> fields
+            @RequestParam("stafListf") List<String> staff,
+            @RequestParam("fieldList") List<String> fields
     ){
         String regex = "^EID[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$";
         Pattern compile = Pattern.compile(regex);
@@ -102,8 +102,8 @@ public class EquipmentController {
                 equipmentDTO.setName(equipmentName);
                 equipmentDTO.setType(type);
                 equipmentDTO.setStatus(status);
-                equipmentDTO.setStaff(staff);
-                equipmentDTO.setField(fields);
+                equipmentDTO.setStaffList(staff);
+                equipmentDTO.setFieldList(fields);
 
                 equipmentService.updateEquipment(equipmentDTO,equipCode);
                 return new ResponseEntity<>(HttpStatus.OK);

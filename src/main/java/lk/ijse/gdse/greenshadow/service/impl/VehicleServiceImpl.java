@@ -55,7 +55,7 @@ public class VehicleServiceImpl implements VehicleService {
     public void updateVehicle(VehicleDTO vehicle, String vehicleCode) {
         Optional<VehicleEntity> byId = vehicleDao.findById(vehicleCode);
         if (byId.isPresent()) {
-            byId.get().setLicansePlateNo(vehicle.getLicansePlateNo());
+            byId.get().setLicansePlateNo(vehicle.getLicensePlateNo());
             byId.get().setCategory(vehicle.getCategory());
             byId.get().setFuelType(vehicle.getFuelType());
             byId.get().setStatus(vehicle.getStatus());

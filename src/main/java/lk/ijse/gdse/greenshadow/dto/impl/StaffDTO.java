@@ -1,9 +1,11 @@
 package lk.ijse.gdse.greenshadow.dto.impl;
 
+import jakarta.persistence.ForeignKey;
 import lk.ijse.gdse.greenshadow.dto.StaffStatus;
 import lk.ijse.gdse.greenshadow.dto.SuperDTO;
 import lk.ijse.gdse.greenshadow.entity.Gender;
 import lk.ijse.gdse.greenshadow.entity.Role;
+import lk.ijse.gdse.greenshadow.entity.impl.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

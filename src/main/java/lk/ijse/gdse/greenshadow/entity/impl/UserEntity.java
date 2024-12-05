@@ -23,11 +23,12 @@ import java.util.Set;
 @Table(name = "user")
 public class UserEntity implements SuperEntity, UserDetails {
     @Id
-    private String userId;
     private String email;
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL,orphanRemoval = true)
+    private StaffEntity staff;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

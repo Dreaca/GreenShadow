@@ -1,9 +1,6 @@
 package lk.ijse.gdse.greenshadow.entity.impl;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lk.ijse.gdse.greenshadow.entity.SuperEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,6 +17,7 @@ public class LogEntity implements SuperEntity {
     private String logcode;
     private Date logdate;
     private String observation;
+    @Column(columnDefinition = "LONGTEXT")
     private String logImage;
     @ManyToOne
     private FieldEntity field;

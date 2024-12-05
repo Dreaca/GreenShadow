@@ -51,7 +51,7 @@ public class VehicleController {
             VehicleDTO vehicleDTO = new VehicleDTO();
 
             vehicleDTO.setVehicleCode(Apputil.generateVehicleCode());
-            vehicleDTO.setLicansePlateNo(licensePlateNo);
+            vehicleDTO.setLicensePlateNo(licensePlateNo);
             vehicleDTO.setCategory(category);
             vehicleDTO.setFuelType(fuelType);
             vehicleDTO.setStatus(status);
@@ -101,7 +101,7 @@ public class VehicleController {
         }else {
             try{
                 VehicleDTO vehicleDTO = new VehicleDTO();
-                vehicleDTO.setLicansePlateNo(licensePlateNo);
+                vehicleDTO.setLicensePlateNo(licensePlateNo);
                 vehicleDTO.setCategory(category);
                 vehicleDTO.setFuelType(fuelType);
                 vehicleDTO.setStatus(status);

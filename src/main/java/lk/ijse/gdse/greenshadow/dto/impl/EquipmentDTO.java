@@ -1,7 +1,6 @@
 package lk.ijse.gdse.greenshadow.dto.impl;
 
 import lk.ijse.gdse.greenshadow.dto.EquipmentStatus;
-import lk.ijse.gdse.greenshadow.dto.SuperDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +15,6 @@ public class EquipmentDTO implements EquipmentStatus {
     private String name;
     private String type;
     private String status;
-    private List<StaffDTO> staff;
-    private List<FieldDTO> field;
+    private List<String> staffList;
+    private List<String> fieldList;
 }

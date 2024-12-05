@@ -26,48 +26,17 @@ public class AuthUserController {
 
     @PostMapping("/signup")
     public ResponseEntity<JWTAuthResponse> signUp(
-            @RequestParam("firstName") String firstName,
-            @RequestParam("lastName") String lastName,
-            @RequestParam("designation") String designation,
-            @RequestParam("gender") String gender,
-            @RequestParam("joinedDate") String joinedDate,
-            @RequestParam("dob") String dob,
-            @RequestParam("role") String role,
-            @RequestParam("address1") String address1,
-            @RequestParam("address2") String address2,
-            @RequestParam("address3") String address3,
-            @RequestParam("address4") String address4,
-            @RequestParam("address5") String address5,
-            @RequestParam("contactNo") String contactNo,
-            @RequestParam("email") String email, // StaffDTO email
-            @RequestParam("password") String password // UserDTO password
+            @RequestParam("email") String email,
+            @RequestParam("password") String password
     ) {
-        StaffDTO member = new StaffDTO();
         UserDTO user = new UserDTO();
-        //        Staff Member data
-        member.setStaffId(Apputil.generateStaffID());
-        member.setFirstName(firstName);
-        member.setLastName(lastName);
-        member.setDesignation(designation);
-        member.setGender(Gender.valueOf(gender.toUpperCase()));
-        member.setJoinedDate(Date.valueOf(joinedDate));
-        member.setDOB(Date.valueOf(dob));
-        member.setAddressLine1(address1);
-        member.setAddressLine2(address2);
-        member.setAddressLine3(address3);
-        member.setAddressLine4(address4);
-        member.setAddressLine5(address5);
-        member.setContactNo(contactNo);
-        member.setEmail(email);
-        member.setRole(Role.valueOf(role.toUpperCase()));
 
         //        User Data
-        user.setUserId(Apputil.generateUSerId());
         user.setEmail(email);
-        user.setRole(Role.valueOf(role.toUpperCase()));
+        user.setRole(Role.OTHER);
         user.setPassword(passwordEncoder.encode(password));
 
-        return ResponseEntity.ok(authService.signUp(member, user));
+        return ResponseEntity.ok(authService.signUp(user));
     }
     @PostMapping("/signIn")
     public ResponseEntity<JWTAuthResponse> authenticateUser(@RequestBody SignIn signIn){

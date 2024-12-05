@@ -7,6 +7,6 @@ import lk.ijse.gdse.greenshadow.secure.SignIn;
 
 public interface AuthService {
     JWTAuthResponse signIn(SignIn signIn);
-    JWTAuthResponse signUp(StaffDTO staffDTO, UserDTO userDTO);
+    JWTAuthResponse signUp(UserDTO userDTO);
     JWTAuthResponse refreshToken(String accessToken);
 }

@@ -20,6 +20,6 @@ public class EquipmentEntity implements SuperEntity {
     private String status;
     @OneToMany(mappedBy = "equipment")
     private List<StaffEntity> staff;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<FieldEntity> field;
 }

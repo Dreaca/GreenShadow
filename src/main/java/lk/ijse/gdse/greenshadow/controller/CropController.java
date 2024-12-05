@@ -19,7 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @RestController
-@RequestMapping("api/v1/crop")
+@RequestMapping("api/v1/crops")
 public class CropController {
     @Autowired
     private CropService cropService;
@@ -30,7 +30,6 @@ public class CropController {
             @RequestParam("scientificName") String scientificName,
             @RequestParam("category") String category,
             @RequestParam("season") String season,
-            @RequestParam("fieldList")List<FieldDTO> fieldDTOList,
             @RequestParam("image")MultipartFile image
             ){
         String cropImage = null;
@@ -45,7 +44,7 @@ public class CropController {
             cropDTO.setCropScientificName(scientificName);
             cropDTO.setCategory(category);
             cropDTO.setSeason(season);
-            cropDTO.setFields(fieldDTOList);
+            cropDTO.setCropImage(cropImage);
 
             cropService.saveCrop(cropDTO);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -94,7 +93,7 @@ public class CropController {
                                            @RequestParam("scientificName") String scientificName,
                                            @RequestParam("category") String category,
                                            @RequestParam("season") String season,
-                                           @RequestParam("fieldList")List<FieldDTO> fieldDTOList,
+                                           @RequestParam("fieldList")List<String> fieldDTOList,
                                            @RequestParam("image")MultipartFile image){
 
         String regex = "^FID[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$";

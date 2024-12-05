@@ -41,5 +41,9 @@ public class StaffEntity implements SuperEntity {
     private EquipmentEntity equipment;
     @ManyToMany
     private List<LogEntity> logs;
+    @OneToOne
+    @JoinColumn(name = "user_email",referencedColumnName = "email")
+    private UserEntity user;
+
 
 }

@@ -2,9 +2,11 @@ package lk.ijse.gdse.greenshadow.service.impl;
 
 import lk.ijse.gdse.greenshadow.customStatusCodes.GeneralErrorCode;
 import lk.ijse.gdse.greenshadow.dao.StaffDao;
+import lk.ijse.gdse.greenshadow.dao.UserDao;
 import lk.ijse.gdse.greenshadow.dto.StaffStatus;
 import lk.ijse.gdse.greenshadow.dto.impl.StaffDTO;
 import lk.ijse.gdse.greenshadow.entity.impl.StaffEntity;
+import lk.ijse.gdse.greenshadow.entity.impl.UserEntity;
 import lk.ijse.gdse.greenshadow.exceptions.DataPersistException;
 import lk.ijse.gdse.greenshadow.service.StaffService;
 import lk.ijse.gdse.greenshadow.util.Mapping;
@@ -21,12 +23,18 @@ public class StaffServiceImpl implements StaffService {
     @Autowired
     private StaffDao staffDao;
     @Autowired
+    private UserDao userDao;
+    @Autowired
     private Mapping mapping;
     @Override
     public void saveMember(StaffDTO member) {
         StaffEntity save = staffDao.save(mapping.toStaffEntity(member));
+
         if (save == null) {
             throw new DataPersistException("Could not save member");
+        }else {
+            Optional<UserEntity> byEmail = userDao.findByEmail(member.getEmail());
+            byEmail.ifPresent(userEntity -> userEntity.setRole(member.getRole()));
         }
     }
 
@@ -61,6 +69,9 @@ public class StaffServiceImpl implements StaffService {
             memberEntity.get().setDOB(member.getDOB());
             memberEntity.get().setJoinedDate(member.getJoinedDate());
             memberEntity.get().setContactNo(member.getContactNo());
+
+            Optional<UserEntity> byEmail = userDao.findByEmail(member.getEmail());
+            byEmail.ifPresent(userEntity -> userEntity.setRole(member.getRole()));
         }
     }
 
