@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,7 +26,7 @@ import java.util.regex.Pattern;
 public class FieldController {
     @Autowired
     private FieldService fieldService;
-
+    @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> saveField(
             @RequestParam("fieldName") String fieldName,
@@ -69,7 +70,7 @@ public class FieldController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST')")
     @DeleteMapping(value = "/{fieldCode}")
     public ResponseEntity<Void> deleteField(@PathVariable("fieldCode") String fieldCode) {
         String regex = "^FID[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$";
@@ -89,12 +90,12 @@ public class FieldController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @PreAuthorize("hasAnyRole('MANAGER','ADMINISTRATOR','SCIENTIST')")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<FieldDTO> getAllFields() {
         return fieldService.getAllFields();
     }
-
+    @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST')")
     @GetMapping(value = "/{fieldCode}",produces = MediaType.APPLICATION_JSON_VALUE)
     public FieldStatus getField(@PathVariable("fieldCode") String fieldCode) {
         String regex = "^FID[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$";
@@ -105,6 +106,7 @@ public class FieldController {
         }
         return fieldService.getField(fieldCode);
     }
+    @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST')")
     @PutMapping(value = "/{fieldCode}" ,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> updateField(@PathVariable("fieldCode") String fieldCode,
                                             @RequestParam("fieldName") String fieldName,

@@ -76,7 +76,17 @@ public class Mapping {
         return modelMapper.map(vehicleDTO, VehicleEntity.class);
     }
     public VehicleDTO toVehicleDTO(VehicleEntity vehicleEntity) {
-        return modelMapper.map(vehicleEntity, VehicleDTO.class);
+        VehicleDTO vehicleDTO = new VehicleDTO();
+        List<String> list = new ArrayList<>();
+        vehicleDTO.setLicensePlateNo(vehicleEntity.getLicansePlateNo());
+        vehicleDTO.setVehicleCode(vehicleEntity.getVehicleCode());
+        vehicleDTO.setCategory(vehicleEntity.getCategory());
+        vehicleDTO.setFuelType(vehicleEntity.getFuelType());
+        vehicleDTO.setRemarks(vehicleEntity.getRemarks());
+        vehicleDTO.setStatus(vehicleEntity.getStatus());
+        vehicleEntity.getAllocatedStaff().forEach(staffEntity -> {list.add(staffEntity.getStaffId());});
+        vehicleDTO.setAllocatedStaff(list);
+        return vehicleDTO;
     }
     public LogEntity toLogEntity(LogDTO logDTO) {
         return modelMapper.map(logDTO, LogEntity.class);
@@ -196,7 +206,22 @@ public class Mapping {
         return modelMapper.map(userEntityList, new TypeToken<List<UserEntity>>() {}.getType());
     }
     public List<VehicleDTO> toVehicleDTOList(List<VehicleEntity> vehicleEntities){
-        return modelMapper.map(vehicleEntities,new TypeToken<List<VehicleDTO>>(){}.getType());
+        List<VehicleDTO> vehicleDTOList = new ArrayList<>();
+        List<String> staffIds = new ArrayList<>();
+        vehicleEntities.forEach(vehicleEntity -> {
+            VehicleDTO vehicleDTO = new VehicleDTO();
+            vehicleDTO.setVehicleCode(vehicleEntity.getVehicleCode());
+            vehicleDTO.setLicensePlateNo(vehicleEntity.getLicansePlateNo());
+            vehicleDTO.setCategory(vehicleEntity.getCategory());
+            vehicleDTO.setRemarks(vehicleEntity.getRemarks());
+            vehicleDTO.setFuelType(vehicleEntity.getFuelType());
+            vehicleDTO.setStatus(vehicleEntity.getStatus());
+            vehicleEntity.getAllocatedStaff().forEach(staffEntity -> {
+                staffIds.add(staffEntity.getStaffId());
+            });
+            vehicleDTOList.add(vehicleDTO);
+        });
+        return vehicleDTOList;
     }
     public List<VehicleEntity> toVehicleEntityList(List<VehicleDTO> vehicleDTOList){
         return modelMapper.map(vehicleDTOList,new TypeToken<List<VehicleEntity>>(){}.getType());

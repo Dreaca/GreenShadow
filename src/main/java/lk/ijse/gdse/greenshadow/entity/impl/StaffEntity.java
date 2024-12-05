@@ -1,5 +1,6 @@
 package lk.ijse.gdse.greenshadow.entity.impl;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lk.ijse.gdse.greenshadow.entity.Gender;
 import lk.ijse.gdse.greenshadow.entity.Role;
@@ -35,7 +36,7 @@ public class StaffEntity implements SuperEntity {
     private Role role;
     @ManyToMany
     private List<FieldEntity> fields;
-    @ManyToMany
+    @ManyToMany(mappedBy = "allocatedStaff", fetch = FetchType.LAZY)
     private List<VehicleEntity> vehicles;
     @ManyToOne
     private EquipmentEntity equipment;

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,7 +27,7 @@ import java.util.regex.Pattern;
 public class LogController {
     @Autowired
     private LogService logService;
-
+    @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST')")
     @DeleteMapping(value = "/{logCode}")
     public ResponseEntity<Void> delete(@PathVariable("logCode") String logCode) {
         String regex = "^LOG[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$";
@@ -45,6 +46,7 @@ public class LogController {
             }
         }
     }
+    @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST')")
     @GetMapping(value = "/{logCode}")
     public LogStatus get(@PathVariable("logCode") String logCode) {
         String regex = "^LOG[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$";
@@ -54,10 +56,12 @@ public class LogController {
             return new GeneralErrorCode(1,"Could not find the log with the id "+logCode);
         }else return logService.getLog(logCode);
     }
+    @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST')")
     @GetMapping
     public List<LogDTO> getLogs() {
         return logService.getAllLogs();
     }
+    @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> save(
             @RequestParam("logDate")Date logDate,
@@ -90,6 +94,7 @@ public class LogController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST')")
     @PutMapping(value = "/{logCode}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> update(
             @RequestParam("logDate")Date logDate,

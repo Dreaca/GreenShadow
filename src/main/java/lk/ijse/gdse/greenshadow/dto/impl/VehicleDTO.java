@@ -16,6 +16,6 @@ public class VehicleDTO implements VehicleStatus {
     private String category;
     private String fuelType;
     private String status;
-    private List<StaffDTO> allocatedStaff;
+    private List<String> allocatedStaff;
     private String remarks;
 }

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -27,6 +28,7 @@ import java.util.regex.Pattern;
 public class StaffController {
     @Autowired
     private StaffService staffService;
+    @PreAuthorize("hasAnyRole('MANAGER','ADMINISTRATOR')")
     @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> saveUser(
             @RequestParam("firstName") String firstName,
@@ -71,10 +73,12 @@ public class StaffController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PreAuthorize("hasAnyRole('MANAGER','ADMINISTRATOR','SCIENTIST')")
     @GetMapping(value = "/getAll", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<StaffDTO> getStaff() {
         return staffService.getAllMembers();
     }
+    @PreAuthorize("hasAnyRole('MANAGER','ADMINISTRATOR')")
     @GetMapping(value = "/{staffId}",produces = MediaType.APPLICATION_JSON_VALUE)
     public StaffStatus getStaffById(@PathVariable("staffId") String staffId) {
         String regexForStaffID = "^SID[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$";
@@ -85,6 +89,7 @@ public class StaffController {
         }
           return staffService.getMember(staffId);
     }
+    @PreAuthorize("hasAnyRole('MANAGER','ADMINISTRATOR')")
     @PutMapping(value = "/{staffId}")
     public ResponseEntity<Void> updateStaff(@RequestBody StaffDTO member,@PathVariable("staffId") String staffId) {
         String regexForStaffID = "^SID[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$";
@@ -100,6 +105,7 @@ public class StaffController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PreAuthorize("hasAnyRole('MANAGER','ADMINISTRATOR')")
     @DeleteMapping(value = "/{staffId}")
     public ResponseEntity<Void> deleteStaff(@PathVariable("staffId") String staffId) {
 

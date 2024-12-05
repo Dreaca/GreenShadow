@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,12 +23,12 @@ import java.util.regex.Pattern;
 public class VehicleController {
     @Autowired
     private VehicleService vehicleService;
-
+    @PreAuthorize("hasAnyRole('MANAGER','ADMINISTRATOR','SCIENTIST')")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<VehicleDTO> getVehicles() {
        return vehicleService.getAllVehicles();
     }
-
+    @PreAuthorize("hasAnyRole('MANAGER','ADMINISTRATOR')")
     @GetMapping(value = "/{vehicleCode}")
     public VehicleStatus getVehicle(@PathVariable("vehicleCode") String vehicleCode) {
         String regex = "^VID[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$";
@@ -38,13 +39,14 @@ public class VehicleController {
         }
         else return vehicleService.getVehicle(vehicleCode);
     }
+    @PreAuthorize("hasAnyRole('MANAGER','ADMINISTRATOR')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createVehicle(
             @RequestParam("licensePlateNo") String licensePlateNo,
             @RequestParam("category") String category,
             @RequestParam("fuelType") String fuelType,
             @RequestParam("status") String status,
-            @RequestParam("allocatedStaff") List<StaffDTO> allocatedStaff,
+            @RequestParam("allocatedStaff") List<String> allocatedStaff,
             @RequestParam("remarks") String remarks
     ) {
         try {
@@ -66,6 +68,7 @@ public class VehicleController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PreAuthorize("hasAnyRole('MANAGER','ADMINISTRATOR')")
     @DeleteMapping(value = "/{vehicleCode}")
     public ResponseEntity<Void> deleteVehicle(@PathVariable("vehicleCode") String vehicleCode) {
         String regex = "^VID[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$";
@@ -85,13 +88,14 @@ public class VehicleController {
             }
         }
     }
+    @PreAuthorize("hasAnyRole('MANAGER','ADMINISTRATOR')")
     @PutMapping(value = "/{vehicleCode}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> updateVehicle(@PathVariable("vehicleCode")String vehicleCode
     , @RequestParam("licensePlateNo") String licensePlateNo
     , @RequestParam("category") String category
     , @RequestParam("fuelType") String fuelType
     , @RequestParam("status") String status
-    , @RequestParam("allocatedStaff") List<StaffDTO> allocatedStaff
+    , @RequestParam("allocatedStaff") List<String> allocatedStaff
     , @RequestParam("remarks") String remarks){
         String regex = "^VID[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$";
         Pattern compile = Pattern.compile(regex);
@@ -108,7 +112,8 @@ public class VehicleController {
                 vehicleDTO.setAllocatedStaff(allocatedStaff);
                 vehicleDTO.setRemarks(remarks);
 
-                vehicleService.saveVehicle(vehicleDTO);
+                System.out.println(vehicleDTO);
+                vehicleService.updateVehicle(vehicleDTO,vehicleCode);
                 return new ResponseEntity<>(HttpStatus.OK);
             }catch (DataPersistException e){
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
