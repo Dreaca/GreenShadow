@@ -24,7 +24,7 @@ import java.util.Map;
 public class JwtServiceImpl implements JwtService {
     @Value("${spring.jwtKey}")
     private String secretKey;
-    public static final long JWT_TOKEN_VALIDITY = 24 * 60 * 60 * 12;
+    public static final long JWT_TOKEN_VALIDITY = 6000;
     @Autowired
     private Mapping mapping;
     @Override

@@ -62,7 +62,7 @@ public class StaffController {
         member.setAddressLine5(address5);
         member.setContactNo(contactNo);
         member.setEmail(email);
-        System.out.println(member);
+
         try {
             staffService.saveMember(member);
             return new ResponseEntity<>(HttpStatus.CREATED);
