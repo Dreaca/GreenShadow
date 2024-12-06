@@ -1,10 +1,13 @@
 package lk.ijse.gdse.greenshadow.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lk.ijse.gdse.greenshadow.customStatusCodes.GeneralErrorCode;
 import lk.ijse.gdse.greenshadow.dto.FieldStatus;
 import lk.ijse.gdse.greenshadow.dto.impl.CropDTO;
 import lk.ijse.gdse.greenshadow.dto.impl.FieldDTO;
 import lk.ijse.gdse.greenshadow.dto.impl.StaffDTO;
+import lk.ijse.gdse.greenshadow.entity.impl.CropEntity;
 import lk.ijse.gdse.greenshadow.exceptions.DataPersistException;
 import lk.ijse.gdse.greenshadow.service.FieldService;
 import lk.ijse.gdse.greenshadow.util.Apputil;
@@ -18,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.*;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,7 +37,7 @@ public class FieldController {
             @RequestParam("location") String location,
             @RequestParam("size") String extSizeofField,
             @RequestParam("plantedCrop") String plantedCrop,
-            @RequestParam("staffList") List<String> staffList,
+            @RequestParam("staffList") String staff,
             @RequestParam("image1") MultipartFile fieldPicture1,
             @RequestParam("image2") MultipartFile fieldPicture2
     ) {
@@ -41,7 +45,7 @@ public class FieldController {
         String pic2 = null;
         int x = Integer.parseInt(location.split(",")[0]);
         int y = Integer.parseInt(location.split(",")[1]);
-
+        ObjectMapper objectMapper = new ObjectMapper();
         try {
             byte[] pic1Bytes = fieldPicture1.getBytes();
             byte[] pic2Bytes = fieldPicture2.getBytes();
@@ -49,14 +53,17 @@ public class FieldController {
             pic1 = Apputil.convertToBase64(pic1Bytes);
             pic2 = Apputil.convertToBase64(pic2Bytes);
 
+
+            List<StaffDTO> staffDTOS = objectMapper.readValue(staff, new TypeReference<List<StaffDTO>>() {});
+            CropDTO cropDTO = objectMapper.readValue(plantedCrop, new TypeReference<CropDTO>() {});
             var buildField = new FieldDTO();
 
             buildField.setFieldCode(Apputil.generateFieldCode());
             buildField.setFieldName(fieldName);
             buildField.setLocation(new Point(x,y));
             buildField.setSize(Double.parseDouble(extSizeofField));
-            buildField.setStaff(staffList);
-            buildField.setCrop(plantedCrop);
+            buildField.setStaff(staffDTOS);
+            buildField.setCrop(cropDTO);
             buildField.setFieldPicture1(pic1);
             buildField.setFieldPicture2(pic2);
 
@@ -113,14 +120,14 @@ public class FieldController {
                                             @RequestParam("location") String location,
                                             @RequestParam("size") Double extSizeofField,
                                             @RequestParam("plantedCrop") String plantedCrop,
-                                            @RequestParam("staffList") List<String> staffList,
+                                            @RequestParam("staffList") String staff,
                                             @RequestParam("image1") MultipartFile fieldPicture1,
                                             @RequestParam("image2") MultipartFile fieldPicture2) {
         String pic1 = null;
         String pic2 = null;
         int x = Integer.parseInt(location.split(",")[0]);
         int y = Integer.parseInt(location.split(",")[1]);
-
+        ObjectMapper objectMapper = new ObjectMapper();
         try {
             byte[] pic1Bytes = fieldPicture1.getBytes();
             byte[] pic2Bytes = fieldPicture2.getBytes();
@@ -128,14 +135,17 @@ public class FieldController {
             pic1 = Apputil.convertToBase64(pic1Bytes);
             pic2 = Apputil.convertToBase64(pic2Bytes);
 
+            List<StaffDTO> staffDTOS = objectMapper.readValue(staff, new TypeReference<List<StaffDTO>>() {});
+            CropDTO cropDTO = objectMapper.readValue(plantedCrop, new TypeReference<CropDTO>() {});
+
             var buildField = new FieldDTO();
 
             buildField.setFieldCode(Apputil.generateFieldCode());
             buildField.setFieldName(fieldName);
             buildField.setLocation(new Point(x,y));
             buildField.setSize(extSizeofField);
-            buildField.setStaff(staffList);
-            buildField.setCrop(plantedCrop);
+            buildField.setStaff(staffDTOS);
+            buildField.setCrop(cropDTO);
             buildField.setFieldPicture1(pic1);
             buildField.setFieldPicture2(pic2);
 

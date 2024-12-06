@@ -1,7 +1,6 @@
 package lk.ijse.gdse.greenshadow.dto.impl;
 
 import lk.ijse.gdse.greenshadow.dto.CropStatus;
-import lk.ijse.gdse.greenshadow.dto.SuperDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +17,6 @@ public class CropDTO implements CropStatus {
     private String cropImage;
     private String category;
     private String season;
-    private List<String> fields;
-    private List<String> logs;
+    private List<FieldDTO> fields;
+    private List<LogDTO> logs;
 }

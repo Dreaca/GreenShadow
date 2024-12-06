@@ -40,7 +40,12 @@ public class StaffEntity implements SuperEntity {
     private List<VehicleEntity> vehicles;
     @ManyToOne
     private EquipmentEntity equipment;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "staff_logs",
+            joinColumns = @JoinColumn(name = "staff_id", referencedColumnName = "staffId"),
+            inverseJoinColumns = @JoinColumn(name = "log_id", referencedColumnName = "logCode")
+    )
     private List<LogEntity> logs;
     @OneToOne
     @JoinColumn(name = "user_email",referencedColumnName = "email")

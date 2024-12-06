@@ -15,6 +15,6 @@ public class EquipmentDTO implements EquipmentStatus {
     private String name;
     private String type;
     private String status;
-    private List<String> staffList;
-    private List<String> fieldList;
+    private List<StaffDTO> staffList;
+    private List<FieldDTO> fieldList;
 }

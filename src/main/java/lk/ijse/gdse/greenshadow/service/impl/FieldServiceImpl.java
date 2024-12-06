@@ -32,32 +32,10 @@ public class FieldServiceImpl implements FieldService {
 
     @Override
     public void saveField(FieldDTO fieldDTO) {
-        FieldEntity fieldEntity = new FieldEntity();
-        fieldEntity.setFieldCode(fieldDTO.getFieldCode());
-        fieldEntity.setFieldName(fieldDTO.getFieldName());
-        fieldEntity.setLocation(fieldDTO.getLocation());
-        fieldEntity.setSize(fieldDTO.getSize());
-        fieldEntity.setFieldPicture1(fieldDTO.getFieldPicture1());
-        fieldEntity.setFieldPicture2(fieldDTO.getFieldPicture2());
-
-        fieldEntity.setCrop(cropDao.getReferenceById(fieldDTO.getCrop()));
-
-        List<StaffEntity> staffList = new ArrayList<>();
-
-        fieldDTO.getStaff().forEach(staffId -> {
-            // Trim any potential whitespace and check the format
-            String trimmedStaffId = staffId.replaceAll("[\\[\\]\"]", "").trim(); // Remove brackets and quotes
-            Optional<StaffEntity> staffOpt = staffDao.findById(trimmedStaffId);
-
-            if (staffOpt.isPresent()) {
-                staffList.add(staffOpt.get());
-            } else {
-                throw new EntityNotFoundException("StaffEntity with ID " + trimmedStaffId + " not found");
-            }
-        });
-
-        fieldEntity.setStaff(staffList);
-        fieldDao.save(fieldEntity);
+        FieldEntity save = fieldDao.save(mapping.toFieldEntity(fieldDTO));
+        if (save == null) {
+            throw new EntityNotFoundException("Could Not Save Field");
+        }
     }
 
     @Override
@@ -68,27 +46,15 @@ public class FieldServiceImpl implements FieldService {
     @Override
     public void updateField(FieldDTO fieldDTO, String fieldCode) {
         Optional<FieldEntity> byId = fieldDao.findById(fieldCode);
-        CropEntity referenceById = cropDao.getReferenceById(fieldDTO.getCrop());
-        List<StaffEntity> staffList = new ArrayList<>();
-
-        fieldDTO.getStaff().forEach(staffId -> {
-            String trimmedStaffId = staffId.replaceAll("[\\[\\]\"]", "").trim();
-            Optional<StaffEntity> staffOpt = staffDao.findById(trimmedStaffId);
-
-            if (staffOpt.isPresent()) {
-                staffList.add(staffOpt.get());
-            } else {
-                throw new EntityNotFoundException("StaffEntity with ID " + trimmedStaffId + " not found");
-            }
-        });
+//        CropEntity referenceById = cropDao.getReferenceById(fieldDTO.getCrop());
         if (byId.isEmpty()) {
             throw new EntityNotFoundException("Field with code " + fieldCode + " not found");
         }else{
             byId.get().setFieldName(fieldDTO.getFieldName());
             byId.get().setLocation(fieldDTO.getLocation());
             byId.get().setSize(fieldDTO.getSize());
-            byId.get().setCrop(referenceById);
-            byId.get().setStaff(staffList);
+            byId.get().setCrop(mapping.toCropEntity(fieldDTO.getCrop()));
+            byId.get().setStaff(mapping.toStaffEntityList(fieldDTO.getStaff()));
             byId.get().setFieldPicture1(fieldDTO.getFieldPicture1());
             byId.get().setFieldPicture2(fieldDTO.getFieldPicture2());
         }
@@ -104,4 +70,5 @@ public class FieldServiceImpl implements FieldService {
     public List<FieldDTO> getAllFields() {
         return mapping.toFieldDTOList(fieldDao.findAll());
     }
+
 }

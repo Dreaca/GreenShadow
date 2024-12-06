@@ -1,5 +1,7 @@
 package lk.ijse.gdse.greenshadow.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lk.ijse.gdse.greenshadow.customStatusCodes.GeneralErrorCode;
 import lk.ijse.gdse.greenshadow.dto.VehicleStatus;
 import lk.ijse.gdse.greenshadow.dto.impl.StaffDTO;
@@ -46,10 +48,12 @@ public class VehicleController {
             @RequestParam("category") String category,
             @RequestParam("fuelType") String fuelType,
             @RequestParam("status") String status,
-            @RequestParam("allocatedStaff") List<String> allocatedStaff,
+            @RequestParam("allocatedStaff") String staff,
             @RequestParam("remarks") String remarks
     ) {
+        ObjectMapper objectMapper = new ObjectMapper();
         try {
+            List<StaffDTO> staffDTOS = objectMapper.readValue(staff, new TypeReference<List<StaffDTO>>() {});
             VehicleDTO vehicleDTO = new VehicleDTO();
 
             vehicleDTO.setVehicleCode(Apputil.generateVehicleCode());
@@ -57,7 +61,7 @@ public class VehicleController {
             vehicleDTO.setCategory(category);
             vehicleDTO.setFuelType(fuelType);
             vehicleDTO.setStatus(status);
-            vehicleDTO.setAllocatedStaff(allocatedStaff);
+            vehicleDTO.setAllocatedStaff(staffDTOS);
             vehicleDTO.setRemarks(remarks);
 
             vehicleService.saveVehicle(vehicleDTO);
@@ -95,7 +99,7 @@ public class VehicleController {
     , @RequestParam("category") String category
     , @RequestParam("fuelType") String fuelType
     , @RequestParam("status") String status
-    , @RequestParam("allocatedStaff") List<String> allocatedStaff
+    , @RequestParam("allocatedStaff") String staff
     , @RequestParam("remarks") String remarks){
         String regex = "^VID[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$";
         Pattern compile = Pattern.compile(regex);
@@ -103,13 +107,15 @@ public class VehicleController {
         if (!matcher.matches()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }else {
+            ObjectMapper objectMapper = new ObjectMapper();
             try{
+                List<StaffDTO> staffDTOS = objectMapper.readValue(staff, new TypeReference<List<StaffDTO>>() {});
                 VehicleDTO vehicleDTO = new VehicleDTO();
                 vehicleDTO.setLicensePlateNo(licensePlateNo);
                 vehicleDTO.setCategory(category);
                 vehicleDTO.setFuelType(fuelType);
                 vehicleDTO.setStatus(status);
-                vehicleDTO.setAllocatedStaff(allocatedStaff);
+                vehicleDTO.setAllocatedStaff(staffDTOS);
                 vehicleDTO.setRemarks(remarks);
 
                 System.out.println(vehicleDTO);

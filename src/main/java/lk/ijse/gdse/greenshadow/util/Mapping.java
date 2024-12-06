@@ -25,46 +25,13 @@ public class Mapping {
         return modelMapper.map(cropDTO, CropEntity.class);
     }
     public CropDTO toCropDTO(CropEntity cropEntity) {
-        CropDTO cropDTO = new CropDTO();
-        List<String> fields = new ArrayList<>();
-        List<String> logs = new ArrayList<>();
-        cropDTO.setCropCode(cropEntity.getCropCode());
-        cropDTO.setCropCommonName(cropEntity.getCropCommonName());
-        cropDTO.setSeason(cropEntity.getSeason());
-        cropDTO.setCropScientificName(cropEntity.getCropScientificName());
-        cropDTO.setCropImage(cropEntity.getCropImage());
-        cropDTO.setCategory(cropEntity.getCategory());
-        cropEntity.getFields().forEach(field -> {
-            fields.add(field.getFieldCode());
-        });
-        cropDTO.setFields(fields);
-        cropEntity.getLogs().forEach(log -> {
-            logs.add(log.getLogcode());
-        });
-        cropDTO.setLogs(logs);
-        return cropDTO;
+       return modelMapper.map(cropEntity, CropDTO.class);
     }
     public FieldEntity toFieldEntity(FieldDTO fieldDTO) {
         return modelMapper.map(fieldDTO, FieldEntity.class);
     }
     public FieldDTO toFieldDTO(FieldEntity fieldEntity) {
-        FieldDTO fieldDTO = new FieldDTO();
-        List<String> list = new ArrayList<>();
-
-        fieldDTO.setFieldCode(fieldEntity.getFieldCode());
-        fieldDTO.setFieldName(fieldEntity.getFieldName());
-        fieldDTO.setFieldPicture1(fieldEntity.getFieldPicture1());
-        fieldDTO.setFieldPicture2(fieldEntity.getFieldPicture2());
-        fieldDTO.setSize(fieldEntity.getSize());
-        fieldDTO.setLocation(fieldEntity.getLocation());
-        fieldDTO.setCrop(fieldEntity.getCrop().getCropCode());
-
-        fieldEntity.getStaff().forEach(staffEntity -> {
-            list.add(staffEntity.getStaffId());
-        });
-        fieldDTO.setStaff(list);
-
-        return fieldDTO;
+       return modelMapper.map(fieldEntity, FieldDTO.class);
     }
     public EquipmentDTO toEquipmentDTO(EquipmentEntity equipmentEntity) {
         return modelMapper.map(equipmentEntity, EquipmentDTO.class);
@@ -76,17 +43,7 @@ public class Mapping {
         return modelMapper.map(vehicleDTO, VehicleEntity.class);
     }
     public VehicleDTO toVehicleDTO(VehicleEntity vehicleEntity) {
-        VehicleDTO vehicleDTO = new VehicleDTO();
-        List<String> list = new ArrayList<>();
-        vehicleDTO.setLicensePlateNo(vehicleEntity.getLicansePlateNo());
-        vehicleDTO.setVehicleCode(vehicleEntity.getVehicleCode());
-        vehicleDTO.setCategory(vehicleEntity.getCategory());
-        vehicleDTO.setFuelType(vehicleEntity.getFuelType());
-        vehicleDTO.setRemarks(vehicleEntity.getRemarks());
-        vehicleDTO.setStatus(vehicleEntity.getStatus());
-        vehicleEntity.getAllocatedStaff().forEach(staffEntity -> {list.add(staffEntity.getStaffId());});
-        vehicleDTO.setAllocatedStaff(list);
-        return vehicleDTO;
+       return modelMapper.map(vehicleEntity,new TypeToken<VehicleDTO>() {}.getType());
     }
     public LogEntity toLogEntity(LogDTO logDTO) {
         return modelMapper.map(logDTO, LogEntity.class);
@@ -101,29 +58,7 @@ public class Mapping {
         return modelMapper.map(staffDTOList, new TypeToken<List<StaffEntity>>() {}.getType());
     }
     public List<CropDTO> toCropDTOList(List<CropEntity> cropEntityList) {
-       List<CropDTO> list = new ArrayList<>();
-        List<String> fieldIds = new ArrayList<>();
-        List<String> logIds = new ArrayList<>();
-       cropEntityList.forEach(entity -> {
-           CropDTO cropDTO = new CropDTO();
-           cropDTO.setCropCode(entity.getCropCode());
-           cropDTO.setCropCommonName(entity.getCropCommonName());
-           cropDTO.setCropScientificName(entity.getCropScientificName());
-           cropDTO.setSeason(entity.getSeason());
-           cropDTO.setCropImage(entity.getCropImage());
-           cropDTO.setCategory(entity.getCategory());
-
-           entity.getFields().forEach(fieldEntity -> {
-               fieldIds.add(fieldEntity.getFieldCode());
-           });
-           entity.getLogs().forEach(logEntity -> {
-              logIds.add(logEntity.getLogcode());
-           });
-           cropDTO.setFields(fieldIds);
-           cropDTO.setLogs(logIds);
-           list.add(cropDTO);
-       });
-       return list;
+      return modelMapper.map(cropEntityList, new TypeToken<List<CropDTO>>() {}.getType());
     }
     public List<CropEntity> toCropEntityList(List<CropDTO> cropDTOList) {
         return modelMapper.map(cropDTOList, new TypeToken<List<CropEntity>>() {}.getType());
@@ -139,59 +74,13 @@ public class Mapping {
         return modelMapper.map(equipmentDTOList, new TypeToken<List<EquipmentEntity>>() {}.getType());
     }
     public List<EquipmentDTO> toEquipmentDTOList(List<EquipmentEntity> equipmentEntityList) {
-        List<EquipmentDTO> sending = new ArrayList<>();
-        List<String> staffIds = new ArrayList<>();
-        ArrayList<String> fields = new ArrayList<>();
-
-        equipmentEntityList.forEach(entity -> {
-            EquipmentDTO equipmentDTO = new EquipmentDTO();
-            equipmentDTO.setEquipmentCode(entity.getEquipmentCode());
-            equipmentDTO.setName(entity.getName());
-            equipmentDTO.setType(entity.getType());
-            equipmentDTO.setStatus(entity.getStatus());
-            entity.getStaff().forEach(staffEntity -> {
-                staffIds.add(staffEntity.getStaffId());
-            });
-            entity.getField().forEach(fieldEntity -> {
-                fields.add(fieldEntity.getFieldCode());
-            });
-            equipmentDTO.setStaffList(staffIds);
-            equipmentDTO.setFieldList(fields);
-            sending.add(equipmentDTO);
-        });
-        return sending;
+       return modelMapper.map(equipmentEntityList, new TypeToken<List<EquipmentDTO>>() {}.getType());
     }
     public List<FieldEntity> toFieldEntityList(List<FieldDTO> fieldDTOList) {
         return modelMapper.map(fieldDTOList, new TypeToken<List<FieldEntity>>() {}.getType());
     }
     public List<FieldDTO> toFieldDTOList(List<FieldEntity> fieldEntityList) {
-        List<FieldDTO> fieldDTOList = new ArrayList<>();
-        fieldEntityList.forEach(fieldEntity -> {
-            FieldDTO fieldDTO = new FieldDTO();
-            fieldDTO.setFieldCode(fieldEntity.getFieldCode());
-            fieldDTO.setFieldName(fieldEntity.getFieldName());
-            fieldDTO.setLocation(fieldEntity.getLocation());
-            fieldDTO.setSize(fieldEntity.getSize());
-            fieldDTO.setFieldPicture1(fieldEntity.getFieldPicture1());
-            fieldDTO.setFieldPicture2(fieldEntity.getFieldPicture2());
-            fieldDTO.setCrop(fieldEntity.getCrop().getCropCode());
-
-            List<String> staffList = new ArrayList<>();
-            fieldEntity.getStaff().forEach(staffEntity -> {
-                staffList.add(
-                        staffEntity.getStaffId()
-                );
-            });
-            fieldDTO.setStaff(staffList);
-            List<String> equipmentlist = new ArrayList<>();
-            fieldEntity.getEquipment().forEach(equipmentEntity -> {
-                equipmentlist.add(equipmentEntity.getEquipmentCode());
-            });
-            fieldDTO.setEquipment(equipmentlist);
-            fieldDTOList.add(fieldDTO);
-
-        });
-        return fieldDTOList;
+        return  modelMapper.map(fieldEntityList, new TypeToken<List<FieldDTO>>() {}.getType());
     }
     public List<LogEntity> toLogEntityList(List<LogDTO> logDTOList) {
         return modelMapper.map(logDTOList, new TypeToken<List<LogEntity>>() {}.getType());
@@ -206,22 +95,7 @@ public class Mapping {
         return modelMapper.map(userEntityList, new TypeToken<List<UserEntity>>() {}.getType());
     }
     public List<VehicleDTO> toVehicleDTOList(List<VehicleEntity> vehicleEntities){
-        List<VehicleDTO> vehicleDTOList = new ArrayList<>();
-        List<String> staffIds = new ArrayList<>();
-        vehicleEntities.forEach(vehicleEntity -> {
-            VehicleDTO vehicleDTO = new VehicleDTO();
-            vehicleDTO.setVehicleCode(vehicleEntity.getVehicleCode());
-            vehicleDTO.setLicensePlateNo(vehicleEntity.getLicansePlateNo());
-            vehicleDTO.setCategory(vehicleEntity.getCategory());
-            vehicleDTO.setRemarks(vehicleEntity.getRemarks());
-            vehicleDTO.setFuelType(vehicleEntity.getFuelType());
-            vehicleDTO.setStatus(vehicleEntity.getStatus());
-            vehicleEntity.getAllocatedStaff().forEach(staffEntity -> {
-                staffIds.add(staffEntity.getStaffId());
-            });
-            vehicleDTOList.add(vehicleDTO);
-        });
-        return vehicleDTOList;
+        return modelMapper.map(vehicleEntities, new TypeToken<List<VehicleDTO>>() {}.getType());
     }
     public List<VehicleEntity> toVehicleEntityList(List<VehicleDTO> vehicleDTOList){
         return modelMapper.map(vehicleDTOList,new TypeToken<List<VehicleEntity>>(){}.getType());

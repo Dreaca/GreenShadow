@@ -30,22 +30,10 @@ public class VehicleServiceImpl implements VehicleService {
     private StaffDao staffDao;
     @Override
     public void saveVehicle(VehicleDTO vehicle) {
-        VehicleEntity vehicleEntity = new VehicleEntity();
-
-        List<StaffEntity> list = new ArrayList<>();
-        vehicleEntity.setVehicleCode(vehicle.getVehicleCode());
-        vehicleEntity.setCategory(vehicle.getCategory());
-        vehicleEntity.setStatus(vehicle.getStatus());
-        vehicleEntity.setRemarks(vehicle.getRemarks());
-        vehicleEntity.setFuelType(vehicle.getFuelType());
-        vehicleEntity.setLicansePlateNo(vehicle.getLicensePlateNo());
-        vehicle.getAllocatedStaff().forEach(allocatedStaff -> {
-            String trimmed = allocatedStaff.replaceAll("[\\[\\]\"]", "").trim();
-            list.add(staffDao.getReferenceById(trimmed));
-        });
-        vehicleEntity.setAllocatedStaff(list);
-        vehicleDao.save(vehicleEntity);
-
+        VehicleEntity save = vehicleDao.save(mapping.toVehicleEntity(vehicle));
+        if (save == null) {
+            throw new DataPersistException("COULD NOT SAVE VEHICLE");
+        }
     }
 
     @Override
@@ -74,11 +62,8 @@ public class VehicleServiceImpl implements VehicleService {
         Optional<VehicleEntity> byId = vehicleDao.findById(vehicleCode);
         if (byId.isPresent()) {
             List<StaffEntity> list = new ArrayList<>();
-            vehicle.getAllocatedStaff().forEach(allocatedStaff -> {
-                String trimmed = allocatedStaff.replaceAll("[\\[\\]\"]", "").trim();
-                list.add(staffDao.getReferenceById(trimmed));
-            });
-            byId.get().setLicansePlateNo(vehicle.getLicensePlateNo());
+            byId.get().setAllocatedStaff(mapping.toStaffEntityList(vehicle.getAllocatedStaff()));
+            byId.get().setLicensePlateNo(vehicle.getLicensePlateNo());
             byId.get().setCategory(vehicle.getCategory());
             byId.get().setFuelType(vehicle.getFuelType());
             byId.get().setStatus(vehicle.getStatus());

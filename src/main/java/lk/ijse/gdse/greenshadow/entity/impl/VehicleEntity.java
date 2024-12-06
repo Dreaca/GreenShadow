@@ -17,7 +17,7 @@ import java.util.List;
 public class VehicleEntity implements SuperEntity{
     @Id
     private String vehicleCode;
-    private String LicansePlateNo;
+    private String licensePlateNo;
     private String category;
     private String fuelType;
     private String status;

@@ -1,5 +1,7 @@
 package lk.ijse.gdse.greenshadow.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lk.ijse.gdse.greenshadow.customStatusCodes.GeneralErrorCode;
 import lk.ijse.gdse.greenshadow.dto.LogStatus;
 import lk.ijse.gdse.greenshadow.dto.impl.CropDTO;
@@ -64,26 +66,30 @@ public class LogController {
     @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> save(
-            @RequestParam("logDate")Date logDate,
+            @RequestParam("logDate")String logDate,
             @RequestParam("observation") String observation,
             @RequestParam("logImage") MultipartFile image,
-            @RequestParam("field") FieldDTO field,
-            @RequestParam("crop") CropDTO crop,
-            @RequestParam("staffList") List<StaffDTO> staffList) {
+            @RequestParam("field") String fields,
+            @RequestParam("crop") String crop,
+            @RequestParam("staff") String staff) {
         String fieldImage = null;
+        ObjectMapper objectMapper = new ObjectMapper();
         try {
+            FieldDTO fieldList = objectMapper.readValue(fields, new TypeReference<FieldDTO>() {});
+            List<StaffDTO> staffDTOS = objectMapper.readValue(staff, new TypeReference<List<StaffDTO>>() {});
+            CropDTO cropDTO = objectMapper.readValue(crop,new TypeReference<CropDTO>(){});
             byte[] imageBytes = image.getBytes();
             fieldImage = Apputil.convertToBase64(imageBytes);
 
             LogDTO logDTO = new LogDTO();
 
-            logDTO.setLogcode(Apputil.generateCropCode());
-            logDTO.setLogdate(logDate);
+            logDTO.setLogcode(Apputil.generateLogCode());
+            logDTO.setLogdate(java.sql.Date.valueOf(logDate));
             logDTO.setObservation(observation);
             logDTO.setLogImage(fieldImage);
-            logDTO.setFields(field);
-            logDTO.setCrop(crop);
-            logDTO.setStaff(staffList);
+            logDTO.setFields(fieldList);
+            logDTO.setCrop(cropDTO);
+            logDTO.setStaff(staffDTOS);
 
             logService.saveLog(logDTO);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -91,18 +97,19 @@ public class LogController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         catch (Exception e){
+            System.out.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST')")
     @PutMapping(value = "/{logCode}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> update(
-            @RequestParam("logDate")Date logDate,
+            @RequestParam("logDate")String logDate,
             @RequestParam("observation") String observation,
             @RequestParam("logImage") MultipartFile image,
-            @RequestParam("field") FieldDTO field,
-            @RequestParam("crop") CropDTO crop,
-            @RequestParam("staffList") List<StaffDTO> staffList,
+            @RequestParam("field") String fields,
+            @RequestParam("crop") String crop,
+            @RequestParam("staff") String staff,
             @PathVariable("logCode") String logCode
     ){
         String regex = "^LOG[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$";
@@ -112,19 +119,23 @@ public class LogController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }else {
             String fieldImage = null;
+            ObjectMapper objectMapper = new ObjectMapper();
             try {
+                FieldDTO fieldList = objectMapper.readValue(fields, new TypeReference<FieldDTO>() {});
+                List<StaffDTO> staffDTOS = objectMapper.readValue(staff, new TypeReference<List<StaffDTO>>() {});
+                CropDTO cropDTO = objectMapper.readValue(crop,new TypeReference<CropDTO>(){});
                 byte[] imageBytes = image.getBytes();
                 fieldImage = Apputil.convertToBase64(imageBytes);
 
                 LogDTO logDTO = new LogDTO();
 
-                logDTO.setLogcode(Apputil.generateCropCode());
-                logDTO.setLogdate(logDate);
+
+                logDTO.setLogdate(java.sql.Date.valueOf(logDate));
                 logDTO.setObservation(observation);
                 logDTO.setLogImage(fieldImage);
-                logDTO.setFields(field);
-                logDTO.setCrop(crop);
-                logDTO.setStaff(staffList);
+                logDTO.setFields(fieldList);
+                logDTO.setCrop(cropDTO);
+                logDTO.setStaff(staffDTOS);
 
                 logService.updateLog(logDTO,logCode);
                 return new ResponseEntity<>(HttpStatus.OK);

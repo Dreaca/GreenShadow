@@ -28,4 +28,7 @@ public class Apputil {
     public static String generateUSerId(){
         return "UID"+UUID.randomUUID().toString();
     }
+    public static String trimmedId(String Id){
+        return Id.replaceAll("[\\[\\]\"]", "").trim();
+    }
 }

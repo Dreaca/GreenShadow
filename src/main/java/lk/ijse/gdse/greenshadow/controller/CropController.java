@@ -1,5 +1,7 @@
 package lk.ijse.gdse.greenshadow.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lk.ijse.gdse.greenshadow.customStatusCodes.GeneralErrorCode;
 import lk.ijse.gdse.greenshadow.dto.CropStatus;
 import lk.ijse.gdse.greenshadow.dto.impl.CropDTO;
@@ -30,10 +32,12 @@ public class CropController {
             @RequestParam("commonName") String commonName,
             @RequestParam("scientificName") String scientificName,
             @RequestParam("category") String category,
+            @RequestParam("fields") String field,
             @RequestParam("season") String season,
             @RequestParam("image")MultipartFile image
             ){
         String cropImage = null;
+        ObjectMapper objectMapper = new ObjectMapper();
         try{
             byte[] imageArr = image.getBytes();
             cropImage = Apputil.convertToBase64(imageArr);
@@ -46,7 +50,8 @@ public class CropController {
             cropDTO.setCategory(category);
             cropDTO.setSeason(season);
             cropDTO.setCropImage(cropImage);
-
+            List<FieldDTO> fieldList = objectMapper.readValue(field, new TypeReference<List<FieldDTO>>() {});
+            cropDTO.setFields(fieldList);
             cropService.saveCrop(cropDTO);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch(DataPersistException e){
@@ -98,7 +103,7 @@ public class CropController {
                                            @RequestParam("scientificName") String scientificName,
                                            @RequestParam("category") String category,
                                            @RequestParam("season") String season,
-                                           @RequestParam("fieldList")List<String> fieldDTOList,
+                                           @RequestParam("fieldList")String fields,
                                            @RequestParam("image")MultipartFile image){
 
         String regex = "^FID[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$";
@@ -107,17 +112,19 @@ public class CropController {
         if (!matcher.matches()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }else {
+            ObjectMapper objectMapper = new ObjectMapper();
             String cropImage = null;
             try {
                 byte[] imgArr = image.getBytes();
                 cropImage = Apputil.convertToBase64(imgArr);
+                List<FieldDTO> fieldList = objectMapper.readValue(fields, new TypeReference<List<FieldDTO>>() {});
 
                 CropDTO cropDTO = new CropDTO();
                 cropDTO.setCropCommonName(commonName);
                 cropDTO.setCropScientificName(scientificName);
                 cropDTO.setCategory(category);
                 cropDTO.setSeason(season);
-                cropDTO.setFields(fieldDTOList);
+                cropDTO.setFields(fieldList);
                 cropDTO.setCropImage(cropImage);
 
                 cropService.updateCrop(cropDTO,cropCode);

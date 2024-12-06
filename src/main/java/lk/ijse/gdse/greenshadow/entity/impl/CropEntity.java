@@ -17,12 +17,16 @@ public class CropEntity implements SuperEntity {
     private String cropCode;
     private String cropCommonName;
     private String cropScientificName;
+
     @Column(columnDefinition = "LONGTEXT")
     private String cropImage;
+
     private String category;
     private String season;
+
     @OneToMany(mappedBy = "crop", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<FieldEntity> fields;
-    @OneToMany(mappedBy = "crop")
-    private List<LogEntity> logs;
+    private List<FieldEntity> fields; // Bidirectional relationship
+
+    @OneToMany(mappedBy = "crop", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<LogEntity> logs; // Bidirectional relationship
 }

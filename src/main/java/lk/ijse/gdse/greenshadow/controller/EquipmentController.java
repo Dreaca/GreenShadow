@@ -1,5 +1,7 @@
 package lk.ijse.gdse.greenshadow.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lk.ijse.gdse.greenshadow.customStatusCodes.GeneralErrorCode;
 import lk.ijse.gdse.greenshadow.dto.EquipmentStatus;
 import lk.ijse.gdse.greenshadow.dto.impl.EquipmentDTO;
@@ -45,17 +47,19 @@ public class EquipmentController {
             @RequestParam("name") String equipmentName,
             @RequestParam("type") String type,
             @RequestParam("status") String status,
-            @RequestParam("staffList") List<String> staff,
-            @RequestParam("fieldList") List<String> fields) {
+            @RequestParam("staffList") String staff,
+            @RequestParam("fieldList") String fields) {
+        ObjectMapper objectMapper = new ObjectMapper();
         try{
             EquipmentDTO equipmentDTO = new EquipmentDTO();
-
+            List<FieldDTO> fieldList = objectMapper.readValue(fields, new TypeReference<List<FieldDTO>>() {});
+            List<StaffDTO> staffDTOS = objectMapper.readValue(staff, new TypeReference<List<StaffDTO>>() {});
             equipmentDTO.setEquipmentCode(Apputil.generateEquipmentCode());
             equipmentDTO.setName(equipmentName);
             equipmentDTO.setType(type);
             equipmentDTO.setStatus(status);
-            equipmentDTO.setStaffList(staff);
-            equipmentDTO.setFieldList(fields);
+            equipmentDTO.setStaffList(staffDTOS);
+            equipmentDTO.setFieldList(fieldList);
 
             equipmentService.saveEquipment(equipmentDTO);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -91,26 +95,30 @@ public class EquipmentController {
             @RequestParam("name") String equipmentName,
             @RequestParam("type") String type,
             @RequestParam("status") String status,
-            @RequestParam("stafListf") List<String> staff,
-            @RequestParam("fieldList") List<String> fields
+            @RequestParam("staffList") String staff,
+            @RequestParam("fieldList") String fields
     ){
-        String regex = "^EID[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$";
+        String regex = "(?i)^EID[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$";
         Pattern compile = Pattern.compile(regex);
         Matcher matcher = compile.matcher(equipCode);
         if (!matcher.matches()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }else {
+            ObjectMapper objectMapper = new ObjectMapper();
             try {
-                EquipmentDTO equipmentDTO = new EquipmentDTO();
+                EquipmentDTO update = new EquipmentDTO();
 
-                equipmentDTO.setEquipmentCode(Apputil.generateEquipmentCode());
-                equipmentDTO.setName(equipmentName);
-                equipmentDTO.setType(type);
-                equipmentDTO.setStatus(status);
-                equipmentDTO.setStaffList(staff);
-                equipmentDTO.setFieldList(fields);
+                List<FieldDTO> fieldList = objectMapper.readValue(fields, new TypeReference<List<FieldDTO>>() {});
+                List<StaffDTO> staffDTOS = objectMapper.readValue(staff, new TypeReference<List<StaffDTO>>() {});
 
-                equipmentService.updateEquipment(equipmentDTO,equipCode);
+
+                update.setName(equipmentName);
+                update.setType(type);
+                update.setStatus(status);
+                update.setStaffList(staffDTOS);
+                update.setFieldList(fieldList);
+
+                equipmentService.updateEquipment(update,equipCode);
                 return new ResponseEntity<>(HttpStatus.OK);
             }catch (DataPersistException e){
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
